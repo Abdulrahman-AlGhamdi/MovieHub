@@ -7,5 +7,5 @@ data class Movie(
     val overview: String,
     val status: String,
     val runtime: Int,
-    val original_language: String
+    val original_language: String,
 )
