@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,11 +25,17 @@ class MainActivity : AppCompatActivity() {
             .create(MovieAPI::class.java)
 
         GlobalScope.launch(Dispatchers.IO) {
-            val response = api.getMovie().awaitResponse()
-            if (response.isSuccessful) {
-                val responseData = response.body()!!
-                Log.d("MovieResult", responseData.title)
-                Log.d("MovieResult", responseData.status)
+            try {
+                val response = api.getMovie().awaitResponse()
+
+                if (response.isSuccessful){
+                    for(movie in response.body()?.results!!){
+                        Log.d("MovieResult", movie.title)
+                    }
+                }
+
+            } catch (e: Exception){
+                Log.d("MovieResult", e.toString())
             }
         }
     }
