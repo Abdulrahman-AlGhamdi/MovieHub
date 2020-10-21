@@ -1,4 +1,4 @@
-package com.ss.moviehub.Adapter
+package com.ss.moviehub.Adapters
 
 import android.content.Intent
 import android.net.Uri
