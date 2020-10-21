@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ss.moviehub.API.MovieAPI
 import com.ss.moviehub.Adapters.RecyclerAdapter
 import com.ss.moviehub.Fragments.MoviesFragment
+import com.ss.moviehub.Fragments.SearchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -21,11 +22,25 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity() {
 
     private val moviesFragment: Fragment = MoviesFragment()
+    private val searchFragment: Fragment = SearchFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction().add(R.id.fragment_container, moviesFragment).commit()
+        currentFragment(moviesFragment)
+
+        navigation_bar.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.home_icon -> currentFragment(moviesFragment)
+                R.id.search_icon -> currentFragment(searchFragment)
+                else -> currentFragment(moviesFragment)
+            }
+            true
+        }
+    }
+
+    private fun currentFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
     }
 }
