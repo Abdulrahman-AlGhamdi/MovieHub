@@ -20,14 +20,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
+    private val moviesFragment: Fragment = MoviesFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var moviesFragment: Fragment = MoviesFragment()
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, moviesFragment)
-            .commit()
+        supportFragmentManager.beginTransaction().add(R.id.fragment_container, moviesFragment).commit()
     }
 }
