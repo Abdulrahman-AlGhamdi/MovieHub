@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ss.moviehub.*
 import com.ss.moviehub.API.MovieAPI
 import com.ss.moviehub.Adapters.RecyclerAdapter
-import com.ss.moviehub.R
 import kotlinx.android.synthetic.main.fragment_movies.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -21,17 +21,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MoviesFragment : Fragment() {
 
-    private var posterList = mutableListOf<String>()
-    private var titleList = mutableListOf<String>()
-    private var backdropList = mutableListOf<String>()
-    private var releaseDateList = mutableListOf<String>()
-    private var overviewList = mutableListOf<String>()
-    private var voteAverageList = mutableListOf<Double>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies, container, false)
+
+        posterList.clear()
+        titleList.clear()
+        backdropList.clear()
+        releaseDateList.clear()
+        overviewList.clear()
+        voteAverageList.clear()
 
         popularMovieRequest()
 

@@ -19,6 +19,13 @@ import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
 
+var posterList = mutableListOf<String>()
+var titleList = mutableListOf<String>()
+var backdropList = mutableListOf<String>()
+var releaseDateList = mutableListOf<String>()
+var overviewList = mutableListOf<String>()
+var voteAverageList = mutableListOf<Double>()
+
 class MainActivity : AppCompatActivity() {
 
     private val moviesFragment: Fragment = MoviesFragment()
