@@ -19,12 +19,12 @@ class Repository {
     ) {
         when (category) {
             "popular" -> {
-                posterList.add(poster)
-                titleList.add(title)
-                backdropList.add(backdrop)
-                releaseDateList.add(releaseDate)
-                overviewList.add(overview)
-                voteAverageList.add(voteAverage)
+                popularPosterList.add(poster)
+                popularTitleList.add(title)
+                popularBackdropList.add(backdrop)
+                popularReleaseDateList.add(releaseDate)
+                popularOverviewList.add(overview)
+                popularVoteAverageList.add(voteAverage)
             }
             "topRated" -> {
                 topRatedPosterList.add(poster)
@@ -58,12 +58,12 @@ class Repository {
         }
 
         val popularMovie = RecyclerAdapter(
-            posterList,
-            titleList,
-            backdropList,
-            releaseDateList,
-            overviewList,
-            voteAverageList
+            popularPosterList,
+            popularTitleList,
+            popularBackdropList,
+            popularReleaseDateList,
+            popularOverviewList,
+            popularVoteAverageList
         )
 
         val topRatedMovie = RecyclerAdapter(
@@ -84,11 +84,20 @@ class Repository {
             upcomingVoteAverageLists
         )
 
+        val searchMovie = RecyclerAdapter(
+            searchPosterList,
+            searchTitleLists,
+            searchBackdropLists,
+            searchReleaseDateLists,
+            searchOverviewLists,
+            searchVoteAverageLists
+        )
+
         when (recyclerView.id) {
             R.id.popular_movies -> recyclerView.adapter = popularMovie
             R.id.top_rated_movies -> recyclerView.adapter = topRatedMovie
             R.id.upcoming_movies -> recyclerView.adapter = upcomingMovie
-            R.id.result_movie -> recyclerView.adapter = popularMovie
+            R.id.result_movie -> recyclerView.adapter = searchMovie
         }
     }
 }

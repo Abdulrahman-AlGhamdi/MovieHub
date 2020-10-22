@@ -16,12 +16,12 @@ val api: MovieAPI = Retrofit.Builder()
     .build()
     .create(MovieAPI::class.java)
 
-var posterList = mutableListOf<String>()
-var titleList = mutableListOf<String>()
-var backdropList = mutableListOf<String>()
-var releaseDateList = mutableListOf<String>()
-var overviewList = mutableListOf<String>()
-var voteAverageList = mutableListOf<Double>()
+var popularPosterList = mutableListOf<String>()
+var popularTitleList = mutableListOf<String>()
+var popularBackdropList = mutableListOf<String>()
+var popularReleaseDateList = mutableListOf<String>()
+var popularOverviewList = mutableListOf<String>()
+var popularVoteAverageList = mutableListOf<Double>()
 
 var topRatedPosterList = mutableListOf<String>()
 var topRatedTitleLists = mutableListOf<String>()
@@ -36,6 +36,13 @@ var upcomingBackdropLists = mutableListOf<String>()
 var upcomingReleaseDateLists = mutableListOf<String>()
 var upcomingOverviewLists = mutableListOf<String>()
 var upcomingVoteAverageLists = mutableListOf<Double>()
+
+var searchPosterList = mutableListOf<String>()
+var searchTitleLists = mutableListOf<String>()
+var searchBackdropLists = mutableListOf<String>()
+var searchReleaseDateLists = mutableListOf<String>()
+var searchOverviewLists = mutableListOf<String>()
+var searchVoteAverageLists = mutableListOf<Double>()
 
 class MainActivity : AppCompatActivity() {
 

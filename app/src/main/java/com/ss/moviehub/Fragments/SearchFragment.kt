@@ -37,12 +37,12 @@ class SearchFragment : Fragment() {
     private fun searchMovie(){
         searchMovie.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                posterList.clear()
-                titleList.clear()
-                backdropList.clear()
-                releaseDateList.clear()
-                overviewList.clear()
-                voteAverageList.clear()
+                searchPosterList.clear()
+                searchTitleLists.clear()
+                searchBackdropLists.clear()
+                searchReleaseDateLists.clear()
+                searchOverviewLists.clear()
+                searchVoteAverageLists.clear()
                 result.text = "Search Result For: $query"
                 searchMovieRequest(query.toString())
                 return false
@@ -91,11 +91,11 @@ class SearchFragment : Fragment() {
         overview: String,
         voteAverage: Double
     ) {
-        posterList.add(poster)
-        titleList.add(title)
-        backdropList.add(backdrop)
-        releaseDateList.add(releaseDate)
-        overviewList.add(overview)
-        voteAverageList.add(voteAverage)
+        searchPosterList.add(poster)
+        searchTitleLists.add(title)
+        searchBackdropLists.add(backdrop)
+        searchReleaseDateLists.add(releaseDate)
+        searchOverviewLists.add(overview)
+        searchVoteAverageLists.add(voteAverage)
     }
 }
