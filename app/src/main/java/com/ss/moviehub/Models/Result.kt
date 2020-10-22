@@ -1,4 +1,4 @@
-package com.ss.moviehub.Model
+package com.ss.moviehub.Models
 
 data class Result(
     val adult: Boolean,

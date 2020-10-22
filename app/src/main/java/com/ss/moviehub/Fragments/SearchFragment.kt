@@ -18,6 +18,8 @@ import retrofit2.awaitResponse
 
 class SearchFragment : Fragment() {
 
+    private lateinit var searchMovie: SearchView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,8 +27,14 @@ class SearchFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        val searchMovie = view.findViewById<SearchView>(R.id.search_movie)
+        searchMovie = view.findViewById(R.id.search_movie)
 
+        searchMovie()
+
+        return view
+    }
+
+    private fun searchMovie(){
         searchMovie.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 posterList.clear()
@@ -44,7 +52,6 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
-        return view
     }
 
     private fun searchMovieRequest(search: String) {

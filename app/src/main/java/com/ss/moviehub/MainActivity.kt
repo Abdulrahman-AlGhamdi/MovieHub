@@ -22,12 +22,20 @@ var backdropList = mutableListOf<String>()
 var releaseDateList = mutableListOf<String>()
 var overviewList = mutableListOf<String>()
 var voteAverageList = mutableListOf<Double>()
-var posterLists = mutableListOf<String>()
-var titleLists = mutableListOf<String>()
-var backdropLists = mutableListOf<String>()
-var releaseDateLists = mutableListOf<String>()
-var overviewLists = mutableListOf<String>()
-var voteAverageLists = mutableListOf<Double>()
+
+var topRatedPosterList = mutableListOf<String>()
+var topRatedTitleLists = mutableListOf<String>()
+var topRatedBackdropLists = mutableListOf<String>()
+var topRatedReleaseDateLists = mutableListOf<String>()
+var topRatedOverviewLists = mutableListOf<String>()
+var topRatedVoteAverageLists = mutableListOf<Double>()
+
+var upcomingPosterList = mutableListOf<String>()
+var upcomingTitleLists = mutableListOf<String>()
+var upcomingBackdropLists = mutableListOf<String>()
+var upcomingReleaseDateLists = mutableListOf<String>()
+var upcomingOverviewLists = mutableListOf<String>()
+var upcomingVoteAverageLists = mutableListOf<Double>()
 
 class MainActivity : AppCompatActivity() {
 

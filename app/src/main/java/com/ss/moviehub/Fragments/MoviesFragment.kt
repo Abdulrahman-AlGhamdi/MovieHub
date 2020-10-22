@@ -32,10 +32,12 @@ class MoviesFragment : Fragment() {
             try {
                 val popularResponse = api.getPopularMovie().awaitResponse()
                 val topRatedResponse = api.getTopRatedMovie().awaitResponse()
+                val upcomingResponse = api.getUpcomingMovie().awaitResponse()
 
                 if (popularResponse.isSuccessful) {
                     for (popularMovie in popularResponse.body()?.results!!) {
                         Repository().addToList(
+                            "popular",
                             popularMovie.poster_path,
                             popularMovie.title,
                             popularMovie.backdrop_path,
@@ -52,7 +54,8 @@ class MoviesFragment : Fragment() {
 
                 if (topRatedResponse.isSuccessful) {
                     for (topRated in topRatedResponse.body()?.results!!) {
-                        Repository().addToTopRatedList(
+                        Repository().addToList(
+                            "topRated",
                             topRated.poster_path,
                             topRated.title,
                             topRated.backdrop_path,
@@ -64,6 +67,24 @@ class MoviesFragment : Fragment() {
 
                     withContext(Dispatchers.Main) {
                         Repository().setupRecyclerView(top_rated_movies)
+                    }
+                }
+
+                if (upcomingResponse.isSuccessful) {
+                    for (upcoming in upcomingResponse.body()?.results!!) {
+                        Repository().addToList(
+                            "upcoming",
+                            upcoming.poster_path,
+                            upcoming.title,
+                            upcoming.backdrop_path,
+                            upcoming.release_date,
+                            upcoming.overview,
+                            upcoming.vote_average
+                        )
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        Repository().setupRecyclerView(upcoming_movies)
                     }
                 }
 

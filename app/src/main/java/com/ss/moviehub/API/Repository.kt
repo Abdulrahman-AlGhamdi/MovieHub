@@ -9,6 +9,7 @@ import com.ss.moviehub.Adapters.RecyclerAdapter
 class Repository {
 
     fun addToList(
+        category: String,
         poster: String,
         title: String,
         backdrop: String,
@@ -16,28 +17,32 @@ class Repository {
         overview: String,
         voteAverage: Double
     ) {
-        posterList.add(poster)
-        titleList.add(title)
-        backdropList.add(backdrop)
-        releaseDateList.add(releaseDate)
-        overviewList.add(overview)
-        voteAverageList.add(voteAverage)
-    }
-
-    fun addToTopRatedList(
-        poster: String,
-        title: String,
-        backdrop: String,
-        releaseDate: String,
-        overview: String,
-        voteAverage: Double
-    ) {
-        posterLists.add(poster)
-        titleLists.add(title)
-        backdropLists.add(backdrop)
-        releaseDateLists.add(releaseDate)
-        overviewLists.add(overview)
-        voteAverageLists.add(voteAverage)
+        when (category) {
+            "popular" -> {
+                posterList.add(poster)
+                titleList.add(title)
+                backdropList.add(backdrop)
+                releaseDateList.add(releaseDate)
+                overviewList.add(overview)
+                voteAverageList.add(voteAverage)
+            }
+            "topRated" -> {
+                topRatedPosterList.add(poster)
+                topRatedTitleLists.add(title)
+                topRatedBackdropLists.add(backdrop)
+                topRatedReleaseDateLists.add(releaseDate)
+                topRatedOverviewLists.add(overview)
+                topRatedVoteAverageLists.add(voteAverage)
+            }
+            "upcoming" -> {
+                upcomingPosterList.add(poster)
+                upcomingTitleLists.add(title)
+                upcomingBackdropLists.add(backdrop)
+                upcomingReleaseDateLists.add(releaseDate)
+                upcomingOverviewLists.add(overview)
+                upcomingVoteAverageLists.add(voteAverage)
+            }
+        }
     }
 
     fun setupRecyclerView(recyclerView: RecyclerView) {
@@ -47,6 +52,8 @@ class Repository {
             R.id.popular_movies -> recyclerView.layoutManager =
                 LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
             R.id.top_rated_movies -> recyclerView.layoutManager =
+                LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
+            R.id.upcoming_movies -> recyclerView.layoutManager =
                 LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
         }
 
@@ -60,17 +67,27 @@ class Repository {
         )
 
         val topRatedMovie = RecyclerAdapter(
-            posterLists,
-            titleLists,
-            backdropLists,
-            releaseDateLists,
-            overviewLists,
-            voteAverageLists
+            topRatedPosterList,
+            topRatedTitleLists,
+            topRatedBackdropLists,
+            topRatedReleaseDateLists,
+            topRatedOverviewLists,
+            topRatedVoteAverageLists
         )
 
-        when(recyclerView.id){
+        val upcomingMovie = RecyclerAdapter(
+            upcomingPosterList,
+            upcomingTitleLists,
+            upcomingBackdropLists,
+            upcomingReleaseDateLists,
+            upcomingOverviewLists,
+            upcomingVoteAverageLists
+        )
+
+        when (recyclerView.id) {
             R.id.popular_movies -> recyclerView.adapter = popularMovie
             R.id.top_rated_movies -> recyclerView.adapter = topRatedMovie
+            R.id.upcoming_movies -> recyclerView.adapter = upcomingMovie
             R.id.result_movie -> recyclerView.adapter = popularMovie
         }
     }

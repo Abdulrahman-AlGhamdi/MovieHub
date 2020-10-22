@@ -25,7 +25,8 @@ class MovieDetailsFragment : Fragment() {
         val backdrop = view.findViewById<ImageView>(R.id.movie_backdrop)
         val poster = view.findViewById<ImageView>(R.id.movie_poster)
         val title = view.findViewById<TextView>(R.id.movie_title)
-        val rating = view.findViewById<RatingBar>(R.id.movie_rating)
+        val ratingStar = view.findViewById<RatingBar>(R.id.movie_rating_star)
+        val ratingNumber = view.findViewById<TextView>(R.id.rating_number)
 
         overView.text = bundle?.getString("overview")
         releaseDate.text = bundle?.getString("releaseDate")
@@ -38,7 +39,8 @@ class MovieDetailsFragment : Fragment() {
             .transform(CenterCrop())
             .into(poster)
         title.text = bundle?.getString("title")
-        rating.rating = (bundle?.getString("voteAverage")!!.toFloat()) / 2
+        ratingNumber.text = bundle?.getString("voteAverage")
+        ratingStar.rating = (bundle?.getString("voteAverage")!!.toFloat()) / 2
 
         return view
     }
