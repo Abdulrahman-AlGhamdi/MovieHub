@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.*
 import com.ss.moviehub.API.Repository
 import kotlinx.android.synthetic.main.fragment_movies.*
@@ -17,23 +18,39 @@ import retrofit2.awaitResponse
 
 class MoviesFragment : Fragment() {
 
+    private var COUNT = 0
+    private lateinit var popularMovies: RecyclerView
+    private lateinit var topRatedMovies: RecyclerView
+    private lateinit var upcomingMovies: RecyclerView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies, container, false)
 
-        movieRequest()
+        popularMovies = view.findViewById(R.id.popular_movies)
+        topRatedMovies = view.findViewById(R.id.top_rated_movies)
+        upcomingMovies = view.findViewById(R.id.upcoming_movies)
+
+        if (COUNT == 0) {
+            movieRequest()
+            topRatedMoviesRequest()
+            upcomingMoviesRequest()
+            COUNT++
+        }
+
+        Repository().setupRecyclerView(popularMovies)
+        Repository().setupRecyclerView(topRatedMovies)
+        Repository().setupRecyclerView(upcomingMovies)
 
         return view
     }
 
     private fun movieRequest() {
         GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val popularResponse = api.getPopularMovie().awaitResponse()
-                val topRatedResponse = api.getTopRatedMovie().awaitResponse()
-                val upcomingResponse = api.getUpcomingMovie().awaitResponse()
+            val popularResponse = api.getPopularMovie().awaitResponse()
 
+            try {
                 if (popularResponse.isSuccessful) {
                     for (popularMovie in popularResponse.body()?.results!!) {
                         Repository().addToList(
@@ -48,28 +65,49 @@ class MoviesFragment : Fragment() {
                     }
 
                     withContext(Dispatchers.Main) {
-                        Repository().setupRecyclerView(popular_movies)
+                        Repository().setupRecyclerView(popularMovies)
                     }
                 }
 
+            } catch (e: Exception) {
+                Log.d("MovieResult", e.toString())
+            }
+        }
+    }
+
+    private fun topRatedMoviesRequest() {
+        GlobalScope.launch(Dispatchers.IO) {
+            val topRatedResponse = api.getTopRatedMovie().awaitResponse()
+
+            try {
                 if (topRatedResponse.isSuccessful) {
-                    for (topRated in topRatedResponse.body()?.results!!) {
+                    for (popularMovie in topRatedResponse.body()?.results!!) {
                         Repository().addToList(
                             "topRated",
-                            topRated.poster_path,
-                            topRated.title,
-                            topRated.backdrop_path,
-                            topRated.release_date,
-                            topRated.overview,
-                            topRated.vote_average
+                            popularMovie.poster_path,
+                            popularMovie.title,
+                            popularMovie.backdrop_path,
+                            popularMovie.release_date,
+                            popularMovie.overview,
+                            popularMovie.vote_average
                         )
                     }
 
                     withContext(Dispatchers.Main) {
-                        Repository().setupRecyclerView(top_rated_movies)
+                        Repository().setupRecyclerView(topRatedMovies)
                     }
                 }
+            } catch (e: Exception) {
+                Log.d("MovieResult", e.toString())
+            }
+        }
+    }
 
+    private fun upcomingMoviesRequest() {
+        GlobalScope.launch(Dispatchers.IO) {
+            val upcomingResponse = api.getUpcomingMovie().awaitResponse()
+
+            try {
                 if (upcomingResponse.isSuccessful) {
                     for (upcoming in upcomingResponse.body()?.results!!) {
                         Repository().addToList(
@@ -84,10 +122,9 @@ class MoviesFragment : Fragment() {
                     }
 
                     withContext(Dispatchers.Main) {
-                        Repository().setupRecyclerView(upcoming_movies)
+                        Repository().setupRecyclerView(upcomingMovies)
                     }
                 }
-
             } catch (e: Exception) {
                 Log.d("MovieResult", e.toString())
             }

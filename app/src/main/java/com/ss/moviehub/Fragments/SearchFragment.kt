@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.*
 import com.ss.moviehub.API.Repository
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -18,7 +19,9 @@ import retrofit2.awaitResponse
 
 class SearchFragment : Fragment() {
 
+    private lateinit var search: String
     private lateinit var searchMovie: SearchView
+    private lateinit var searchResultMovies: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,11 +29,10 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-
         searchMovie = view.findViewById(R.id.search_movie)
-
+        searchResultMovies = view.findViewById(R.id.result_movie)
         searchMovie()
-
+        Repository().setupRecyclerView(searchResultMovies)
         return view
     }
 
@@ -43,8 +45,9 @@ class SearchFragment : Fragment() {
                 searchReleaseDateLists.clear()
                 searchOverviewLists.clear()
                 searchVoteAverageLists.clear()
-                result.text = "Search Result For: $query"
-                searchMovieRequest(query.toString())
+                search = query!!
+                result.text = "Search Result For: $search"
+                searchMovieRequest()
                 return false
             }
 
@@ -54,8 +57,7 @@ class SearchFragment : Fragment() {
         })
     }
 
-    private fun searchMovieRequest(search: String) {
-
+    private fun searchMovieRequest() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val response =
@@ -73,7 +75,7 @@ class SearchFragment : Fragment() {
                         )
                     }
                     withContext(Dispatchers.Main) {
-                        Repository().setupRecyclerView(result_movie)
+                        Repository().setupRecyclerView(searchResultMovies)
                     }
                 }
 
