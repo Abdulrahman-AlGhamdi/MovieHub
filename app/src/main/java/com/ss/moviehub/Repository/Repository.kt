@@ -1,14 +1,95 @@
-package com.ss.moviehub.API
+package com.ss.moviehub.Repository
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.*
+import com.ss.moviehub.API.MovieAPI
 import com.ss.moviehub.Adapters.RecyclerAdapter
+import retrofit2.Retrofit
+import retrofit2.awaitResponse
+import retrofit2.converter.gson.GsonConverterFactory
 
 class Repository {
 
-    fun addToList(
+    val api: MovieAPI = Retrofit.Builder()
+        .baseUrl("https://api.themoviedb.org/3/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(MovieAPI::class.java)
+
+    suspend fun getPopularMovie() {
+        val popularResponse = api.getPopularMovie().awaitResponse()
+        if (popularResponse.isSuccessful) {
+            for (popularMovie in popularResponse.body()?.results!!)
+                addToList(
+                    "popular",
+                    popularMovie.poster_path,
+                    popularMovie.title,
+                    popularMovie.backdrop_path,
+                    popularMovie.release_date,
+                    popularMovie.overview,
+                    popularMovie.vote_average
+                )
+        }
+    }
+
+    suspend fun getTopRatedMovie() {
+        val topRatedResponse = api.getTopRatedMovie().awaitResponse()
+
+        if (topRatedResponse.isSuccessful) {
+            for (topRatedMovie in topRatedResponse.body()?.results!!)
+                addToList(
+                    "topRated",
+                    topRatedMovie.poster_path,
+                    topRatedMovie.title,
+                    topRatedMovie.backdrop_path,
+                    topRatedMovie.release_date,
+                    topRatedMovie.overview,
+                    topRatedMovie.vote_average
+                )
+        }
+    }
+
+    suspend fun getUpcomingMovie() {
+        val upcomingResponse = Repository().api.getUpcomingMovie().awaitResponse()
+
+        if (upcomingResponse.isSuccessful) {
+            for (upcoming in upcomingResponse.body()?.results!!) {
+                Repository().addToList(
+                    "upcoming",
+                    upcoming.poster_path,
+                    upcoming.title,
+                    upcoming.backdrop_path,
+                    upcoming.release_date,
+                    upcoming.overview,
+                    upcoming.vote_average
+                )
+            }
+        }
+    }
+
+    suspend fun getSearchedMovie(search: String) {
+        val response = Repository()
+            .api.getSearchedMovie("c549b0b6a42c2b56589e9be69b41897c", search)
+            .awaitResponse()
+
+        if (response.isSuccessful) {
+            for (searchedMovie in response.body()?.results!!) {
+                addToList(
+                    "search",
+                    searchedMovie.poster_path,
+                    searchedMovie.title,
+                    searchedMovie.backdrop_path,
+                    searchedMovie.release_date,
+                    searchedMovie.overview,
+                    searchedMovie.vote_average
+                )
+            }
+        }
+    }
+
+    private fun addToList(
         category: String,
         poster: String,
         title: String,
@@ -41,6 +122,14 @@ class Repository {
                 upcomingReleaseDateLists.add(releaseDate)
                 upcomingOverviewLists.add(overview)
                 upcomingVoteAverageLists.add(voteAverage)
+            }
+            "search" -> {
+                searchPosterList.add(poster)
+                searchTitleLists.add(title)
+                searchBackdropLists.add(backdrop)
+                searchReleaseDateLists.add(releaseDate)
+                searchOverviewLists.add(overview)
+                searchVoteAverageLists.add(voteAverage)
             }
         }
     }

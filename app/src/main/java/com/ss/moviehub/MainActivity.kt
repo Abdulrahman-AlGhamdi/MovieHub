@@ -10,12 +10,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-val api: MovieAPI = Retrofit.Builder()
-    .baseUrl("https://api.themoviedb.org/3/")
-    .addConverterFactory(GsonConverterFactory.create())
-    .build()
-    .create(MovieAPI::class.java)
-
 var popularPosterList = mutableListOf<String>()
 var popularTitleList = mutableListOf<String>()
 var popularBackdropList = mutableListOf<String>()
