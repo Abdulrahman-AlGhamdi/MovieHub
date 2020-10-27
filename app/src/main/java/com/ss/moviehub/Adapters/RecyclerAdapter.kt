@@ -1,6 +1,7 @@
 package com.ss.moviehub.Adapters
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.ss.moviehub.Fragments.MovieDetailsFragment
+import com.ss.moviehub.Models.Result
 import com.ss.moviehub.R
 
-class RecyclerAdapter(
-    private var posterPath: List<String>,
-    private var title: List<String>,
-    private var backdrop: List<String>,
-    private var releaseDate: List<String>,
-    private var overview: List<String>,
-    private var voteAverage: List<Double>,
-) : RecyclerView.Adapter<ViewHolder>() {
+class RecyclerAdapter(private val movieItems: List<Result>): RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -30,26 +25,29 @@ class RecyclerAdapter(
     }
 
     override fun getItemCount(): Int {
-        return posterPath.size
+        return movieItems.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        Log.d("resultMovie", "onBindViewHolder: has been called")
+
         val bundle = Bundle()
         val movieDetailsFragment: Fragment = MovieDetailsFragment()
+        val movieItem = movieItems[position]
 
         Glide.with(holder.poster)
-            .load("https://image.tmdb.org/t/p/w342${posterPath[position]}")
+            .load("https://image.tmdb.org/t/p/w342${movieItem.poster_path}")
             .transform(CenterCrop())
             .into(holder.poster)
 
         holder.itemView.setOnClickListener {
-            bundle.putString("poster", posterPath[position])
-            bundle.putString("title", title[position])
-            bundle.putString("backdrop", backdrop[position])
-            bundle.putString("releaseDate", releaseDate[position])
-            bundle.putString("overview", overview[position])
-            bundle.putString("voteAverage", voteAverage[position].toString())
+            bundle.putString("poster", movieItem.poster_path)
+            bundle.putString("title", movieItem.title)
+            bundle.putString("backdrop", movieItem.backdrop_path)
+            bundle.putString("releaseDate", movieItem.release_date)
+            bundle.putString("overview", movieItem.overview)
+            bundle.putString("voteAverage", movieItem.vote_average.toString())
             movieDetailsFragment.arguments = bundle
             (holder.itemView.context as FragmentActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, movieDetailsFragment)

@@ -1,192 +1,90 @@
 package com.ss.moviehub.Repository
 
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.ss.moviehub.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.ss.moviehub.API.MovieAPI
-import com.ss.moviehub.Adapters.RecyclerAdapter
-import retrofit2.Retrofit
-import retrofit2.awaitResponse
+import com.ss.moviehub.Models.Movie
+import com.ss.moviehub.Models.Result
+import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 class Repository {
 
-    val api: MovieAPI = Retrofit.Builder()
+    private val api: MovieAPI = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(MovieAPI::class.java)
 
-    suspend fun getPopularMovie() {
-        val popularResponse = api.getPopularMovie().awaitResponse()
-        if (popularResponse.isSuccessful) {
-            for (popularMovie in popularResponse.body()?.results!!)
-                addToList(
-                    "popular",
-                    popularMovie.poster_path,
-                    popularMovie.title,
-                    popularMovie.backdrop_path,
-                    popularMovie.release_date,
-                    popularMovie.overview,
-                    popularMovie.vote_average
-                )
-        }
-    }
+    fun getPopularMovie(): LiveData<List<Result>> {
 
-    suspend fun getTopRatedMovie() {
-        val topRatedResponse = api.getTopRatedMovie().awaitResponse()
+        val responseLiveData: MutableLiveData<List<Result>> = MutableLiveData()
+        val popularResponse = api.getPopularMovie()
 
-        if (topRatedResponse.isSuccessful) {
-            for (topRatedMovie in topRatedResponse.body()?.results!!)
-                addToList(
-                    "topRated",
-                    topRatedMovie.poster_path,
-                    topRatedMovie.title,
-                    topRatedMovie.backdrop_path,
-                    topRatedMovie.release_date,
-                    topRatedMovie.overview,
-                    topRatedMovie.vote_average
-                )
-        }
-    }
+        popularResponse.enqueue(object : Callback<Movie> {
 
-    suspend fun getUpcomingMovie() {
-        val upcomingResponse = Repository().api.getUpcomingMovie().awaitResponse()
-
-        if (upcomingResponse.isSuccessful) {
-            for (upcoming in upcomingResponse.body()?.results!!) {
-                Repository().addToList(
-                    "upcoming",
-                    upcoming.poster_path,
-                    upcoming.title,
-                    upcoming.backdrop_path,
-                    upcoming.release_date,
-                    upcoming.overview,
-                    upcoming.vote_average
-                )
+            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                responseLiveData.value = response.body()?.results
             }
-        }
+
+            override fun onFailure(call: Call<Movie>, t: Throwable) {
+            }
+        })
+
+        return responseLiveData
     }
 
-    suspend fun getSearchedMovie(search: String) {
-        val response = Repository()
+    fun getTopRatedMovie(): LiveData<List<Result>> {
+
+        val responseLiveData: MutableLiveData<List<Result>> = MutableLiveData()
+        val topRatedResponse = api.getTopRatedMovie()
+
+        topRatedResponse.enqueue(object : Callback<Movie> {
+
+            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                responseLiveData.value = response.body()?.results
+            }
+
+            override fun onFailure(call: Call<Movie>, t: Throwable) {
+            }
+        })
+
+        return responseLiveData
+    }
+
+    fun getUpcomingMovie(): LiveData<List<Result>> {
+
+        val responseLiveData: MutableLiveData<List<Result>> = MutableLiveData()
+        val upcomingResponse = api.getUpcomingMovie()
+
+        upcomingResponse.enqueue(object : Callback<Movie> {
+            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                responseLiveData.value = response.body()?.results
+            }
+
+            override fun onFailure(call: Call<Movie>, t: Throwable) {
+            }
+        })
+
+        return responseLiveData
+    }
+
+    fun getSearchedMovie(search: String): LiveData<List<Result>> {
+
+        val responseLiveData: MutableLiveData<List<Result>> = MutableLiveData()
+        val searchResponse = Repository()
             .api.getSearchedMovie("c549b0b6a42c2b56589e9be69b41897c", search)
-            .awaitResponse()
 
-        if (response.isSuccessful) {
-            for (searchedMovie in response.body()?.results!!) {
-                addToList(
-                    "search",
-                    searchedMovie.poster_path,
-                    searchedMovie.title,
-                    searchedMovie.backdrop_path,
-                    searchedMovie.release_date,
-                    searchedMovie.overview,
-                    searchedMovie.vote_average
-                )
+        searchResponse.enqueue(object : Callback<Movie> {
+            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                responseLiveData.value = response.body()?.results
             }
-        }
-    }
 
-    private fun addToList(
-        category: String,
-        poster: String,
-        title: String,
-        backdrop: String,
-        releaseDate: String,
-        overview: String,
-        voteAverage: Double
-    ) {
-        when (category) {
-            "popular" -> {
-                popularPosterList.add(poster)
-                popularTitleList.add(title)
-                popularBackdropList.add(backdrop)
-                popularReleaseDateList.add(releaseDate)
-                popularOverviewList.add(overview)
-                popularVoteAverageList.add(voteAverage)
+            override fun onFailure(call: Call<Movie>, t: Throwable) {
+
             }
-            "topRated" -> {
-                topRatedPosterList.add(poster)
-                topRatedTitleLists.add(title)
-                topRatedBackdropLists.add(backdrop)
-                topRatedReleaseDateLists.add(releaseDate)
-                topRatedOverviewLists.add(overview)
-                topRatedVoteAverageLists.add(voteAverage)
-            }
-            "upcoming" -> {
-                upcomingPosterList.add(poster)
-                upcomingTitleLists.add(title)
-                upcomingBackdropLists.add(backdrop)
-                upcomingReleaseDateLists.add(releaseDate)
-                upcomingOverviewLists.add(overview)
-                upcomingVoteAverageLists.add(voteAverage)
-            }
-            "search" -> {
-                searchPosterList.add(poster)
-                searchTitleLists.add(title)
-                searchBackdropLists.add(backdrop)
-                searchReleaseDateLists.add(releaseDate)
-                searchOverviewLists.add(overview)
-                searchVoteAverageLists.add(voteAverage)
-            }
-        }
-    }
+        })
 
-    fun setupRecyclerView(recyclerView: RecyclerView) {
-        when (recyclerView.id) {
-            R.id.result_movie -> recyclerView.layoutManager =
-                GridLayoutManager(recyclerView.context, 3)
-            R.id.popular_movies -> recyclerView.layoutManager =
-                LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
-            R.id.top_rated_movies -> recyclerView.layoutManager =
-                LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
-            R.id.upcoming_movies -> recyclerView.layoutManager =
-                LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
-        }
-
-        val popularMovie = RecyclerAdapter(
-            popularPosterList,
-            popularTitleList,
-            popularBackdropList,
-            popularReleaseDateList,
-            popularOverviewList,
-            popularVoteAverageList
-        )
-
-        val topRatedMovie = RecyclerAdapter(
-            topRatedPosterList,
-            topRatedTitleLists,
-            topRatedBackdropLists,
-            topRatedReleaseDateLists,
-            topRatedOverviewLists,
-            topRatedVoteAverageLists
-        )
-
-        val upcomingMovie = RecyclerAdapter(
-            upcomingPosterList,
-            upcomingTitleLists,
-            upcomingBackdropLists,
-            upcomingReleaseDateLists,
-            upcomingOverviewLists,
-            upcomingVoteAverageLists
-        )
-
-        val searchMovie = RecyclerAdapter(
-            searchPosterList,
-            searchTitleLists,
-            searchBackdropLists,
-            searchReleaseDateLists,
-            searchOverviewLists,
-            searchVoteAverageLists
-        )
-
-        when (recyclerView.id) {
-            R.id.popular_movies -> recyclerView.adapter = popularMovie
-            R.id.top_rated_movies -> recyclerView.adapter = topRatedMovie
-            R.id.upcoming_movies -> recyclerView.adapter = upcomingMovie
-            R.id.result_movie -> recyclerView.adapter = searchMovie
-        }
+        return responseLiveData
     }
 }

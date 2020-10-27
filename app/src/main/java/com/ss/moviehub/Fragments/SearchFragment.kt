@@ -6,9 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.*
+import com.ss.moviehub.Adapters.RecyclerAdapter
 import com.ss.moviehub.Repository.Repository
+import com.ss.moviehub.ViewModel.MovieViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -17,43 +22,38 @@ import kotlinx.coroutines.withContext
 
 class SearchFragment : Fragment() {
 
-    private lateinit var searchView: View
+    private lateinit var fragmentView: View
     private lateinit var searchMovie: SearchView
     private lateinit var searchResultMovies: RecyclerView
+    private lateinit var movieItemLiveData: MovieViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        searchView = inflater.inflate(R.layout.fragment_search, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_search, container, false)
 
         init()
         searchMovie()
 
-        return searchView
+        return fragmentView
     }
 
     private fun init() {
-        searchMovie = searchView.findViewById(R.id.search_movie)
-        searchResultMovies = searchView.findViewById(R.id.result_movie)
+        movieItemLiveData = MovieViewModel()
+        searchMovie = fragmentView.findViewById(R.id.search_movie)
+        searchResultMovies = fragmentView.findViewById(R.id.result_movie)
     }
 
     private fun searchMovie() {
         searchMovie.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchPosterList.clear()
-                searchTitleLists.clear()
-                searchBackdropLists.clear()
-                searchReleaseDateLists.clear()
-                searchOverviewLists.clear()
-                searchVoteAverageLists.clear()
                 result.text = "Search Result For: $query"
-                GlobalScope.launch {
+                movieItemLiveData.searchedMoviesLiveData =
                     Repository().getSearchedMovie(query.toString())
-
-                    withContext(Dispatchers.Main) {
-                        Repository().setupRecyclerView(searchResultMovies)
-                    }
-                }
+                movieItemLiveData.searchedMoviesLiveData.observe(viewLifecycleOwner, Observer {
+                    searchResultMovies.layoutManager = GridLayoutManager(context, 3)
+                    searchResultMovies.adapter = RecyclerAdapter(it)
+                })
                 return false
             }
 
@@ -61,6 +61,5 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
-        Repository().setupRecyclerView(searchResultMovies)
     }
 }
