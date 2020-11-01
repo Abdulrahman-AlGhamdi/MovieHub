@@ -1,21 +1,18 @@
 package com.ss.moviehub.Fragments
 
-import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.ss.moviehub.MainActivity
 import com.ss.moviehub.Models.Result
 import com.ss.moviehub.R
 
-
-class MovieDetailsFragment : Fragment() {
+class DetailsFragment : Fragment() {
 
     private lateinit var detailsView: View
     private lateinit var bundle: Bundle
@@ -28,6 +25,7 @@ class MovieDetailsFragment : Fragment() {
     private lateinit var ratingStar: RatingBar
     private lateinit var ratingNumber: TextView
     private lateinit var libraryFragment: Fragment
+    private lateinit var details: Result
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -36,12 +34,17 @@ class MovieDetailsFragment : Fragment() {
 
         initViews()
         bindMovieDetails()
+        checkIfAdded()
         addToLibrary()
 
         return detailsView
     }
 
     private fun initViews() {
+        if (this.arguments != null){
+            bundle = this.arguments!!
+            details = bundle.getParcelable("details")!!
+        }
         overView = detailsView.findViewById(R.id.movie_overview)
         releaseDate = detailsView.findViewById(R.id.movie_release_date)
         backdrop = detailsView.findViewById(R.id.movie_backdrop)
@@ -73,12 +76,21 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
+    private fun checkIfAdded() {
+        if (this.arguments != null){
+            if (details.added){
+                addToLibrary.visibility = View.INVISIBLE
+        }
+
+        } else {
+            addToLibrary.visibility = View.VISIBLE
+        }
+    }
+
     private fun addToLibrary() {
         addToLibrary.setOnClickListener {
-            val intent = Intent(context, MainActivity::class.java)
-            bundle.putParcelable("library", bundle.getParcelable("details"))
-            intent.putExtra("libraryIntent", bundle)
-            startActivity(intent)
+            details.added = true
+            libraryListHolder.add(details)
             Toast.makeText(context, "Added to Library", Toast.LENGTH_SHORT).show()
         }
     }

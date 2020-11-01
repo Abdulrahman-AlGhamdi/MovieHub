@@ -11,12 +11,12 @@ import com.ss.moviehub.Adapters.RecyclerAdapter
 import com.ss.moviehub.Models.Result
 import com.ss.moviehub.R
 
-private var libraryList: MutableList<Result> = mutableListOf()
+var libraryListHolder: ArrayList<Result> = ArrayList()
 
 class LibraryFragment : Fragment() {
 
     private lateinit var libraryView: View
-    private lateinit var bundle: Bundle
+    private lateinit var libraryList: MutableList<Result>
     private lateinit var libraryRecyclerView: RecyclerView
 
     override fun onCreateView(
@@ -26,23 +26,21 @@ class LibraryFragment : Fragment() {
 
         initViews()
         bindLibraryMovies()
-        libraryRecyclerView.adapter = RecyclerAdapter(libraryList)
 
         return libraryView
     }
 
     private fun initViews() {
+        libraryList = mutableListOf()
         libraryRecyclerView = libraryView.findViewById(R.id.library_movies)
         libraryRecyclerView.layoutManager = GridLayoutManager(context, 3)
     }
 
     private fun bindLibraryMovies() {
-        if (this.arguments != null) {
-            bundle = this.arguments!!
-            libraryList.clear()
-            val library: Result? = bundle.getParcelable("library")
-            if (library != null)
-                libraryList.add(library)
+        libraryList.clear()
+        libraryListHolder.forEach {
+            libraryList.add(it)
         }
+        libraryRecyclerView.adapter = RecyclerAdapter(libraryList)
     }
 }

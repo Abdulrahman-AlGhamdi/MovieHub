@@ -8,21 +8,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.*
 import com.ss.moviehub.Adapters.RecyclerAdapter
 import com.ss.moviehub.Repository.Repository
 import com.ss.moviehub.ViewModel.MovieViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SearchFragment : Fragment() {
 
-    private lateinit var fragmentView: View
+    private lateinit var searchView: View
     private lateinit var searchMovie: SearchView
     private lateinit var searchResultMovies: RecyclerView
     private lateinit var movieItemLiveData: MovieViewModel
@@ -30,18 +25,18 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_search, container, false)
+        searchView = inflater.inflate(R.layout.fragment_search, container, false)
 
         init()
         searchMovie()
 
-        return fragmentView
+        return searchView
     }
 
     private fun init() {
         movieItemLiveData = MovieViewModel()
-        searchMovie = fragmentView.findViewById(R.id.search_movie)
-        searchResultMovies = fragmentView.findViewById(R.id.result_movie)
+        searchMovie = searchView.findViewById(R.id.search_movie)
+        searchResultMovies = searchView.findViewById(R.id.result_movie)
     }
 
     private fun searchMovie() {
