@@ -12,6 +12,11 @@
         android:title="@string/search"/>
 
     <item
+        android:id="@+id/library_icon"
+        android:icon="@drawable/library_icon"
+        android:title="@string/library"/>
+
+    <item
         android:id="@+id/settings_icon"
         android:icon="@drawable/settings_icon"
         android:title="@string/settings"/>

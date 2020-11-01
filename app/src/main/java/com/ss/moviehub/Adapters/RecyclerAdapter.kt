@@ -42,12 +42,7 @@ class RecyclerAdapter(private val movieItems: List<Result>): RecyclerView.Adapte
             .into(holder.poster)
 
         holder.itemView.setOnClickListener {
-            bundle.putString("poster", movieItem.poster_path)
-            bundle.putString("title", movieItem.title)
-            bundle.putString("backdrop", movieItem.backdrop_path)
-            bundle.putString("releaseDate", movieItem.release_date)
-            bundle.putString("overview", movieItem.overview)
-            bundle.putString("voteAverage", movieItem.vote_average.toString())
+            bundle.putParcelable("details", movieItem)
             movieDetailsFragment.arguments = bundle
             (holder.itemView.context as FragmentActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, movieDetailsFragment)
