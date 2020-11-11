@@ -15,49 +15,38 @@ import com.ss.moviehub.Adapters.RecyclerAdapter
 import com.ss.moviehub.ViewModel.MovieViewModel
 import kotlinx.android.synthetic.main.fragment_movies.*
 
-class MoviesFragment : Fragment() {
+class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
-    private lateinit var movieView: View
-    private lateinit var popularMovies: RecyclerView
-    private lateinit var topRatedMovies: RecyclerView
-    private lateinit var upcomingMovies: RecyclerView
     private lateinit var movieItemLiveData: MovieViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        movieView = inflater.inflate(R.layout.fragment_movies, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         init()
         getMovies()
-
-        return movieView
     }
 
     private fun init() {
         movieItemLiveData = MovieViewModel()
-        popularMovies = movieView.findViewById(R.id.popular_movies)
-        topRatedMovies = movieView.findViewById(R.id.top_rated_movies)
-        upcomingMovies = movieView.findViewById(R.id.upcoming_movies)
     }
 
     private fun getMovies() {
         movieItemLiveData.popularMoviesLiveData.observe(viewLifecycleOwner, Observer {
-            popularMovies.layoutManager =
+            popular_movies.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            popularMovies.adapter = RecyclerAdapter(it)
+            popular_movies.adapter = RecyclerAdapter(it, "MovieFragment")
         })
 
         movieItemLiveData.topRatedMoviesLiveData.observe(viewLifecycleOwner, Observer {
-            topRatedMovies.layoutManager =
+            top_rated_movies.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            topRatedMovies.adapter = RecyclerAdapter(it)
+            top_rated_movies.adapter = RecyclerAdapter(it, "MovieFragment")
         })
 
         movieItemLiveData.upcomingMoviesLiveData.observe(viewLifecycleOwner, Observer {
-            upcomingMovies.layoutManager =
+            upcoming_movies.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            upcomingMovies.adapter = RecyclerAdapter(it)
+            upcoming_movies.adapter = RecyclerAdapter(it, "MovieFragment")
         })
     }
 }

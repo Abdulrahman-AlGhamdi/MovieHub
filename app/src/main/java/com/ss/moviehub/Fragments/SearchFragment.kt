@@ -15,39 +15,30 @@ import com.ss.moviehub.Repository.Repository
 import com.ss.moviehub.ViewModel.MovieViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(R.layout.fragment_search) {
 
-    private lateinit var searchView: View
-    private lateinit var searchMovie: SearchView
-    private lateinit var searchResultMovies: RecyclerView
     private lateinit var movieItemLiveData: MovieViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        searchView = inflater.inflate(R.layout.fragment_search, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         init()
         searchMovie()
-
-        return searchView
     }
 
     private fun init() {
         movieItemLiveData = MovieViewModel()
-        searchMovie = searchView.findViewById(R.id.search_movie)
-        searchResultMovies = searchView.findViewById(R.id.result_movie)
     }
 
     private fun searchMovie() {
-        searchMovie.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        search_movie.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 result.text = "Search Result For: $query"
                 movieItemLiveData.searchedMoviesLiveData =
                     Repository().getSearchedMovie(query.toString())
                 movieItemLiveData.searchedMoviesLiveData.observe(viewLifecycleOwner, Observer {
-                    searchResultMovies.layoutManager = GridLayoutManager(context, 3)
-                    searchResultMovies.adapter = RecyclerAdapter(it)
+                    result_movie.layoutManager = GridLayoutManager(context, 3)
+                    result_movie.adapter = RecyclerAdapter(it , "SearchFragment")
                 })
                 return false
             }

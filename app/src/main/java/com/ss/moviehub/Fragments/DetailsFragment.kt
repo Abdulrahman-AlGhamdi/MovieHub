@@ -1,96 +1,59 @@
 package com.ss.moviehub.Fragments
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.ss.moviehub.Models.Result
 import com.ss.moviehub.R
+import kotlinx.android.synthetic.main.fragment_movie_details.*
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
-    private lateinit var detailsView: View
-    private lateinit var bundle: Bundle
-    private lateinit var overView: TextView
-    private lateinit var addToLibrary: Button
-    private lateinit var releaseDate: TextView
-    private lateinit var backdrop: ImageView
-    private lateinit var poster: ImageView
-    private lateinit var title: TextView
-    private lateinit var ratingStar: RatingBar
-    private lateinit var ratingNumber: TextView
-    private lateinit var libraryFragment: Fragment
-    private lateinit var details: Result
+    private val arguments by navArgs<DetailsFragmentArgs>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        detailsView = inflater.inflate(R.layout.fragment_movie_details, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        initViews()
         bindMovieDetails()
         checkIfAdded()
         addToLibrary()
-
-        return detailsView
-    }
-
-    private fun initViews() {
-        if (this.arguments != null){
-            bundle = this.arguments!!
-            details = bundle.getParcelable("details")!!
-        }
-        overView = detailsView.findViewById(R.id.movie_overview)
-        releaseDate = detailsView.findViewById(R.id.movie_release_date)
-        backdrop = detailsView.findViewById(R.id.movie_backdrop)
-        poster = detailsView.findViewById(R.id.movie_poster)
-        title = detailsView.findViewById(R.id.movie_title)
-        ratingStar = detailsView.findViewById(R.id.movie_rating_star)
-        ratingNumber = detailsView.findViewById(R.id.rating_number)
-        addToLibrary = detailsView.findViewById(R.id.add_to_library)
-        libraryFragment = LibraryFragment()
     }
 
     private fun bindMovieDetails() {
-        if (this.arguments != null) {
-            bundle = this.arguments!!
-            val details: Result? = bundle.getParcelable("details")
-            overView.text = details?.overview
-            releaseDate.text = details?.release_date
-            Glide.with(backdrop)
-                .load("https://image.tmdb.org/t/p/w342${details?.backdrop_path}")
-                .transform(CenterCrop())
-                .into(backdrop)
-            Glide.with(poster)
-                .load("https://image.tmdb.org/t/p/w342${details?.poster_path}")
-                .transform(CenterCrop())
-                .into(poster)
-            title.text = details?.title
-            ratingNumber.text = details?.vote_average.toString()
-            ratingStar.rating = (details?.vote_average!!.toFloat()) / 2
-        }
+        movie_title.text = arguments.selectedMovie.title
+        movie_overview.text = arguments.selectedMovie.overview
+        movie_release_date.text = arguments.selectedMovie.release_date
+        Glide.with(movie_backdrop)
+            .load("https://image.tmdb.org/t/p/w342${arguments.selectedMovie.backdrop_path}")
+            .transform(CenterCrop())
+            .into(movie_backdrop)
+        Glide.with(movie_poster)
+            .load("https://image.tmdb.org/t/p/w342${arguments.selectedMovie.poster_path}")
+            .transform(CenterCrop())
+            .into(movie_poster)
+
+        rating_number.text = arguments.selectedMovie.vote_average.toString()
+        movie_rating_star.rating = (arguments.selectedMovie.vote_average.toFloat()) / 2
     }
 
     private fun checkIfAdded() {
-        if (this.arguments != null){
-            if (details.added){
-                addToLibrary.visibility = View.INVISIBLE
-        }
-
+        if (arguments.selectedMovie.added) {
+            add_to_library.visibility = View.INVISIBLE
         } else {
-            addToLibrary.visibility = View.VISIBLE
+            add_to_library.visibility = View.VISIBLE
         }
     }
 
     private fun addToLibrary() {
-        addToLibrary.setOnClickListener {
-            details.added = true
-            libraryListHolder.add(details)
+        add_to_library.setOnClickListener {
+            arguments.selectedMovie.added = true
+            libraryListHolder.add(arguments.selectedMovie)
             Toast.makeText(context, "Added to Library", Toast.LENGTH_SHORT).show()
         }
     }

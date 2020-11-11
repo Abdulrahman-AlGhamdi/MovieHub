@@ -41,6 +41,6 @@ class LibraryFragment : Fragment() {
         libraryListHolder.forEach {
             libraryList.add(it)
         }
-        libraryRecyclerView.adapter = RecyclerAdapter(libraryList)
+        libraryRecyclerView.adapter = RecyclerAdapter(libraryList, "LibraryFragment")
     }
 }
