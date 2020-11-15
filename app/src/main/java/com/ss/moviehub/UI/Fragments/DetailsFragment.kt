@@ -1,15 +1,12 @@
-package com.ss.moviehub.Fragments
+package com.ss.moviehub.UI.Fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.ss.moviehub.Models.Result
 import com.ss.moviehub.R
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 
@@ -21,7 +18,6 @@ class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
         super.onViewCreated(view, savedInstanceState)
 
         bindMovieDetails()
-        checkIfAdded()
         addToLibrary()
     }
 
@@ -42,13 +38,13 @@ class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
         movie_rating_star.rating = (arguments.selectedMovie.vote_average.toFloat()) / 2
     }
 
-    private fun checkIfAdded() {
-        if (arguments.selectedMovie.added) {
-            add_to_library.visibility = View.INVISIBLE
-        } else {
-            add_to_library.visibility = View.VISIBLE
-        }
-    }
+//    private fun checkIfAdded() {
+//        if (arguments.selectedMovie.added) {
+//            add_to_library.visibility = View.INVISIBLE
+//        } else {
+//            add_to_library.visibility = View.VISIBLE
+//        }
+//    }
 
     private fun addToLibrary() {
         add_to_library.setOnClickListener {

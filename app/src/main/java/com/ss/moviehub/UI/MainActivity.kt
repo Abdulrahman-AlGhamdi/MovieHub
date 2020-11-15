@@ -1,15 +1,10 @@
-package com.ss.moviehub
+package com.ss.moviehub.UI
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.ss.moviehub.Fragments.DetailsFragment
-import com.ss.moviehub.Fragments.LibraryFragment
-import com.ss.moviehub.Fragments.MoviesFragment
-import com.ss.moviehub.Fragments.SearchFragment
+import com.ss.moviehub.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

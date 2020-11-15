@@ -1,4 +1,4 @@
-package com.ss.moviehub.Fragments
+package com.ss.moviehub.UI.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

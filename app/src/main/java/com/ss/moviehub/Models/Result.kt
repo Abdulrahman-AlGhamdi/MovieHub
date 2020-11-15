@@ -1,14 +1,18 @@
 package com.ss.moviehub.Models
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
+@Entity(tableName = "movies")
 data class Result(
+    @PrimaryKey
+    val id: Int,
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: List<Int>,
-    val id: Int,
     val original_language: String,
     val original_title: String,
     val overview: String,

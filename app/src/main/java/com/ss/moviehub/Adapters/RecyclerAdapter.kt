@@ -9,14 +9,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.ss.moviehub.Fragments.LibraryFragmentDirections
-import com.ss.moviehub.Fragments.MoviesFragmentDirections
-import com.ss.moviehub.Fragments.SearchFragmentDirections
 import com.ss.moviehub.Models.Result
 import com.ss.moviehub.R
+import com.ss.moviehub.UI.Fragments.LibraryFragmentDirections
+import com.ss.moviehub.UI.Fragments.MoviesFragmentDirections
+import com.ss.moviehub.UI.Fragments.SearchFragmentDirections
 import kotlinx.android.synthetic.main.item_movie.view.*
 
-class RecyclerAdapter(private val movieItems: List<Result>, private val fragmentName: String) :
+class RecyclerAdapter(private val resultItems: List<Result>, private val fragmentName: String) :
     RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,14 +27,14 @@ class RecyclerAdapter(private val movieItems: List<Result>, private val fragment
     }
 
     override fun getItemCount(): Int {
-        return movieItems.size
+        return resultItems.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         Log.d("resultMovie", "onBindViewHolder: has been called")
 
-        val movieItem = movieItems[position]
+        val movieItem = resultItems[position]
 
         Glide.with(holder.poster)
             .load("https://image.tmdb.org/t/p/w342${movieItem.poster_path}")
@@ -51,11 +51,11 @@ class RecyclerAdapter(private val movieItems: List<Result>, private val fragment
                 val position = adapterPosition
 
                 val movieAction =
-                    MoviesFragmentDirections.actionMoviesFragmentToDetailsFragment(movieItems[position])
+                    MoviesFragmentDirections.actionMoviesFragmentToDetailsFragment(resultItems[position])
                 val searchAction =
-                    SearchFragmentDirections.actionSearchFragmentToDetailsFragment(movieItems[position])
+                    SearchFragmentDirections.actionSearchFragmentToDetailsFragment(resultItems[position])
                 val libraryAction =
-                    LibraryFragmentDirections.actionLibraryFragmentToDetailsFragment(movieItems[position])
+                    LibraryFragmentDirections.actionLibraryFragmentToDetailsFragment(resultItems[position])
 
                 if (fragmentName == "MovieFragment")
                     itemView.findNavController().navigate(movieAction)
