@@ -2,37 +2,32 @@ package com.ss.moviehub.UI.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ss.moviehub.Adapters.RecyclerAdapter
+import com.ss.moviehub.Adapters.MovieAdapter
 import com.ss.moviehub.Models.Result
 import com.ss.moviehub.R
 
 var libraryListHolder: ArrayList<Result> = ArrayList()
 
-class LibraryFragment : Fragment() {
+class LibraryFragment : Fragment(R.layout.fragment_library) {
 
-    private lateinit var libraryView: View
+    private lateinit var libraryAdapter: MovieAdapter
     private lateinit var libraryList: MutableList<Result>
     private lateinit var libraryRecyclerView: RecyclerView
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        libraryView = inflater.inflate(R.layout.fragment_library, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         initViews()
         bindLibraryMovies()
-
-        return libraryView
     }
 
     private fun initViews() {
         libraryList = mutableListOf()
-        libraryRecyclerView = libraryView.findViewById(R.id.library_movies)
+        libraryAdapter = MovieAdapter("LibraryFragment")
+        libraryRecyclerView = view?.findViewById(R.id.library_movies)!!
         libraryRecyclerView.layoutManager = GridLayoutManager(context, 3)
     }
 
@@ -41,6 +36,7 @@ class LibraryFragment : Fragment() {
         libraryListHolder.forEach {
             libraryList.add(it)
         }
-        libraryRecyclerView.adapter = RecyclerAdapter(libraryList, "LibraryFragment")
+        libraryAdapter.differ.submitList(libraryList)
+        libraryRecyclerView.adapter = libraryAdapter
     }
 }

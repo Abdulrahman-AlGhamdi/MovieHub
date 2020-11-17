@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="movie_rating_star,movie_release_date" />
+        app:constraint_referenced_ids="movie_rating_bar,movie_release_date" />
 
     <TextView
         android:id="@+id/movie_overview"
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/movie_poster_card" />
 
     <RatingBar
-        android:id="@+id/movie_rating_star"
+        android:id="@+id/movie_rating_bar"
         style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

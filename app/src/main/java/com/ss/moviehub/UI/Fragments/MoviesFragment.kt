@@ -1,23 +1,28 @@
 package com.ss.moviehub.UI.Fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.*
-import com.ss.moviehub.Adapters.RecyclerAdapter
+import com.ss.moviehub.Adapters.MovieAdapter
 import com.ss.moviehub.ViewModel.MovieViewModel
-import kotlinx.android.synthetic.main.fragment_movies.*
 
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
+    // View Model
     private lateinit var movieItemLiveData: MovieViewModel
-    private lateinit var popularRecycler: RecyclerView
-    private lateinit var topRatedRecycler: RecyclerView
-    private lateinit var upcomingRecycler: RecyclerView
+
+    // Recycler View
+    private lateinit var popularRecyclerView: RecyclerView
+    private lateinit var topRatedRecyclerView: RecyclerView
+    private lateinit var upcomingRecyclerView: RecyclerView
+
+    // Adapter
+    private lateinit var popularMovieAdapter: MovieAdapter
+    private lateinit var topRatedMovieAdapter: MovieAdapter
+    private lateinit var upcomingMovieAdapter: MovieAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,29 +32,37 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     }
 
     private fun init() {
+        // Adapter
+        popularMovieAdapter = MovieAdapter("MovieFragment")
+        topRatedMovieAdapter = MovieAdapter("MovieFragment")
+        upcomingMovieAdapter = MovieAdapter("MovieFragment")
+
+        // Recycler View
+        popularRecyclerView = view?.findViewById(R.id.popular_movies)!!
+        topRatedRecyclerView = view?.findViewById(R.id.top_rated_movies)!!
+        upcomingRecyclerView = view?.findViewById(R.id.upcoming_movies)!!
+
+        // View Model
         movieItemLiveData = MovieViewModel()
-        popularRecycler = view?.findViewById(R.id.popular_movies)!!
-        topRatedRecycler = view?.findViewById(R.id.top_rated_movies)!!
-        upcomingRecycler = view?.findViewById(R.id.upcoming_movies)!!
     }
 
     private fun getMovies() {
-        movieItemLiveData.popularMoviesLiveData.observe(viewLifecycleOwner, Observer {
-            popular_movies.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            popularRecycler.adapter = RecyclerAdapter(it, "MovieFragment")
+        movieItemLiveData.popularMoviesLiveData.observe(viewLifecycleOwner, {
+            popularRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            popularMovieAdapter.differ.submitList(it)
+            popularRecyclerView.adapter = popularMovieAdapter
         })
 
-        movieItemLiveData.topRatedMoviesLiveData.observe(viewLifecycleOwner, Observer {
-            top_rated_movies.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            topRatedRecycler.adapter = RecyclerAdapter(it, "MovieFragment")
+        movieItemLiveData.topRatedMoviesLiveData.observe(viewLifecycleOwner, {
+            topRatedRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            topRatedMovieAdapter.differ.submitList(it)
+            topRatedRecyclerView.adapter = topRatedMovieAdapter
         })
 
-        movieItemLiveData.upcomingMoviesLiveData.observe(viewLifecycleOwner, Observer {
-            upcoming_movies.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            upcomingRecycler.adapter = RecyclerAdapter(it, "MovieFragment")
+        movieItemLiveData.upcomingMoviesLiveData.observe(viewLifecycleOwner, {
+            upcomingRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            upcomingMovieAdapter.differ.submitList(it)
+            upcomingRecyclerView.adapter = upcomingMovieAdapter
         })
     }
 }

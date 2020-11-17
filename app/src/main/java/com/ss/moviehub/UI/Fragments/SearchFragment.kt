@@ -6,14 +6,17 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.*
-import com.ss.moviehub.Adapters.RecyclerAdapter
+import com.ss.moviehub.Adapters.MovieAdapter
 import com.ss.moviehub.Repository.Repository
 import com.ss.moviehub.ViewModel.MovieViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
+    private lateinit var searchAdapter: MovieAdapter
+    private lateinit var searchRecyclerView: RecyclerView
     private lateinit var movieItemLiveData: MovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -25,6 +28,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun init() {
         movieItemLiveData = MovieViewModel()
+        searchAdapter = MovieAdapter("SearchFragment")
+        searchRecyclerView = view?.findViewById(R.id.searched_movie)!!
     }
 
     private fun searchMovie() {
@@ -34,8 +39,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 movieItemLiveData.searchedMoviesLiveData =
                     Repository().getSearchedMovie(query.toString())
                 movieItemLiveData.searchedMoviesLiveData.observe(viewLifecycleOwner, Observer {
-                    result_movie.layoutManager = GridLayoutManager(context, 3)
-                    result_movie.adapter = RecyclerAdapter(it , "SearchFragment")
+                    searchRecyclerView.layoutManager = GridLayoutManager(context, 3)
+                    searchAdapter.differ.submitList(it)
+                    searchRecyclerView.adapter = searchAdapter
                 })
                 return false
             }
