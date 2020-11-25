@@ -12,7 +12,7 @@ import com.ss.moviehub.ViewModel.MovieViewModel
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     // View Model
-    private lateinit var movieItemLiveData: MovieViewModel
+    private lateinit var viewModel: MovieViewModel
 
     // Recycler View
     private lateinit var popularRecyclerView: RecyclerView
@@ -43,23 +43,23 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         upcomingRecyclerView = view?.findViewById(R.id.upcoming_movies)!!
 
         // View Model
-        movieItemLiveData = MovieViewModel()
+        viewModel = MovieViewModel()
     }
 
     private fun getMovies() {
-        movieItemLiveData.popularMoviesLiveData.observe(viewLifecycleOwner, {
+        viewModel.popularMoviesLiveData.observe(viewLifecycleOwner, {
             popularRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             popularMovieAdapter.differ.submitList(it)
             popularRecyclerView.adapter = popularMovieAdapter
         })
 
-        movieItemLiveData.topRatedMoviesLiveData.observe(viewLifecycleOwner, {
+        viewModel.topRatedMoviesLiveData.observe(viewLifecycleOwner, {
             topRatedRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             topRatedMovieAdapter.differ.submitList(it)
             topRatedRecyclerView.adapter = topRatedMovieAdapter
         })
 
-        movieItemLiveData.upcomingMoviesLiveData.observe(viewLifecycleOwner, {
+        viewModel.upcomingMoviesLiveData.observe(viewLifecycleOwner, {
             upcomingRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             upcomingMovieAdapter.differ.submitList(it)
             upcomingRecyclerView.adapter = upcomingMovieAdapter
