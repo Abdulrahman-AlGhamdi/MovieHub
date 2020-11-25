@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
+@Entity(tableName = "result_table")
 data class Result(
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
     val adult: Boolean,
     val backdrop_path: String,
@@ -19,5 +21,6 @@ data class Result(
     val title: String,
     val video: Boolean,
     val vote_average: Double,
-    val vote_count: Int
+    val vote_count: Int,
+    var added: Boolean = false
 ) : Parcelable

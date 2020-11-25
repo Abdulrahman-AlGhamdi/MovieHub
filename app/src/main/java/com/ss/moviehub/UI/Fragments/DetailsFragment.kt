@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.google.android.material.snackbar.Snackbar
 import com.ss.moviehub.R
-import kotlinx.android.synthetic.main.fragment_movie_details.*
+import com.ss.moviehub.UI.MainActivity
+import com.ss.moviehub.UI.ViewModel.MovieViewModel
 
 class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
@@ -20,6 +22,8 @@ class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private lateinit var ratingNumber: TextView
     private lateinit var rating: RatingBar
     private lateinit var addToLibrary: Button
+    private lateinit var deleteFromLibrary: Button
+    private lateinit var viewModel: MovieViewModel
     private val arguments by navArgs<DetailsFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,17 +32,20 @@ class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
         initViews()
         bindMovieDetails()
         addToLibrary()
+        deleteFromLibrary()
     }
 
     private fun initViews() {
-        title = view?.findViewById(R.id.movie_title)!!
-        overview = view?.findViewById(R.id.movie_overview)!!
-        releaseDate = view?.findViewById(R.id.movie_release_date)!!
-        backdrop = view?.findViewById(R.id.movie_backdrop)!!
-        poster = view?.findViewById(R.id.movie_poster)!!
-        ratingNumber = view?.findViewById(R.id.rating_number)!!
-        rating = view?.findViewById(R.id.movie_rating_bar)!!
-        addToLibrary = view?.findViewById(R.id.add_to_library)!!
+        viewModel = (activity as MainActivity).viewModel
+        title = requireView().findViewById(R.id.movie_title)
+        overview = requireView().findViewById(R.id.movie_overview)
+        releaseDate = requireView().findViewById(R.id.movie_release_date)
+        backdrop = requireView().findViewById(R.id.movie_backdrop)
+        poster = requireView().findViewById(R.id.movie_poster)
+        ratingNumber = requireView().findViewById(R.id.rating_number)
+        rating = requireView().findViewById(R.id.movie_rating_bar)
+        addToLibrary = requireView().findViewById(R.id.add_to_library)
+        deleteFromLibrary = requireView().findViewById(R.id.delete_from_library)
     }
 
     private fun bindMovieDetails() {
@@ -59,9 +66,34 @@ class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun addToLibrary() {
-        addToLibrary.setOnClickListener {
-            libraryListHolder.add(arguments.selectedMovie)
-            Toast.makeText(context, "Added to Library", Toast.LENGTH_SHORT).show()
+        if (!arguments.selectedMovie.added) {
+            addToLibrary.visibility = View.VISIBLE
+            addToLibrary.setOnClickListener {
+                arguments.selectedMovie.added = true
+                viewModel.addMovieToLibrary(arguments.selectedMovie)
+                Snackbar.make(requireView(), "Added to Library", Snackbar.LENGTH_SHORT).show()
+            }
+        } else {
+            addToLibrary.visibility = View.GONE
+        }
+
+    }
+
+    private fun deleteFromLibrary() {
+        if (arguments.selectedMovie.added) {
+            deleteFromLibrary.visibility = View.VISIBLE
+            deleteFromLibrary.setOnClickListener {
+                arguments.selectedMovie.added = false
+                viewModel.deleteMovieFromLibrary(arguments.selectedMovie)
+                Snackbar.make(requireView(), "Movie Successfully Deleted", Snackbar.LENGTH_SHORT)
+                    .setAction("Undo") {
+                        viewModel.addMovieToLibrary(arguments.selectedMovie)
+                        arguments.selectedMovie.added = true
+                    }
+                    .show()
+            }
+        } else {
+            deleteFromLibrary.visibility = View.GONE
         }
     }
 }

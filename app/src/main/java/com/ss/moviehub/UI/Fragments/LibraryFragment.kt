@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.Adapters.MovieAdapter
 import com.ss.moviehub.Models.Result
 import com.ss.moviehub.R
-
-var libraryListHolder: ArrayList<Result> = ArrayList()
+import com.ss.moviehub.UI.MainActivity
+import com.ss.moviehub.UI.ViewModel.MovieViewModel
 
 class LibraryFragment : Fragment(R.layout.fragment_library) {
 
+    private lateinit var viewModel: MovieViewModel
     private lateinit var libraryAdapter: MovieAdapter
     private lateinit var libraryList: MutableList<Result>
     private lateinit var libraryRecyclerView: RecyclerView
@@ -25,6 +26,7 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
     }
 
     private fun initViews() {
+        viewModel = (activity as MainActivity).viewModel
         libraryList = mutableListOf()
         libraryAdapter = MovieAdapter("LibraryFragment")
         libraryRecyclerView = view?.findViewById(R.id.library_movies)!!
@@ -32,11 +34,9 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
     }
 
     private fun bindLibraryMovies() {
-        libraryList.clear()
-        libraryListHolder.forEach {
-            libraryList.add(it)
-        }
-        libraryAdapter.differ.submitList(libraryList)
-        libraryRecyclerView.adapter = libraryAdapter
+        viewModel.getLibraryMovies().observe(viewLifecycleOwner, {
+            libraryAdapter.differ.submitList(it)
+            libraryRecyclerView.adapter = libraryAdapter
+        })
     }
 }

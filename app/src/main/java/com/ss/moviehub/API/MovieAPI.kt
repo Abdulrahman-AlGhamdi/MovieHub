@@ -2,7 +2,6 @@ package com.ss.moviehub.API
 
 import com.ss.moviehub.Models.MovieResponse
 import com.ss.moviehub.Utils.Constants.API_KEY
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

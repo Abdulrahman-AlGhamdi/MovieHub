@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.*
 import com.ss.moviehub.Adapters.MovieAdapter
-import com.ss.moviehub.ViewModel.MovieViewModel
+import com.ss.moviehub.UI.MainActivity
+import com.ss.moviehub.UI.ViewModel.MovieViewModel
 
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
@@ -38,12 +39,12 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         upcomingMovieAdapter = MovieAdapter("MovieFragment")
 
         // Recycler View
-        popularRecyclerView = view?.findViewById(R.id.popular_movies)!!
-        topRatedRecyclerView = view?.findViewById(R.id.top_rated_movies)!!
-        upcomingRecyclerView = view?.findViewById(R.id.upcoming_movies)!!
+        popularRecyclerView = requireView().findViewById(R.id.popular_movies)
+        topRatedRecyclerView = requireView().findViewById(R.id.top_rated_movies)
+        upcomingRecyclerView = requireView().findViewById(R.id.upcoming_movies)
 
         // View Model
-        viewModel = MovieViewModel()
+        viewModel = (activity as MainActivity).viewModel
     }
 
     private fun getMovies() {

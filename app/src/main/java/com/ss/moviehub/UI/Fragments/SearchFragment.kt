@@ -4,13 +4,12 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.*
 import com.ss.moviehub.Adapters.MovieAdapter
-import com.ss.moviehub.Repository.MovieRepository
-import com.ss.moviehub.ViewModel.MovieViewModel
+import com.ss.moviehub.UI.MainActivity
+import com.ss.moviehub.UI.ViewModel.MovieViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
@@ -28,10 +27,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun init() {
-        viewModel = MovieViewModel()
-        search = view?.findViewById(R.id.search_movie)!!
+        viewModel = (activity as MainActivity).viewModel
+        search = requireView().findViewById(R.id.search_movie)
         searchAdapter = MovieAdapter("SearchFragment")
-        searchRecyclerView = view?.findViewById(R.id.searched_movie)!!
+        searchRecyclerView = requireView().findViewById(R.id.searched_movie)
     }
 
     private fun searchMovie() {
