@@ -44,7 +44,7 @@ class MovieViewModel(private var repository: MovieRepository) : ViewModel() {
     }
 
     fun getSearchMovie(search: String) = viewModelScope.launch {
-        val response = repository.getSearchedMovie(search, upcomingMoviePage)
+        val response = repository.getSearchedMovie(search, searchMoviePage)
         if (response.isSuccessful)
             searchedMoviesLiveData.postValue(response.body()?.results)
     }

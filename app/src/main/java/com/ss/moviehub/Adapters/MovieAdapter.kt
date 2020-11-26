@@ -15,7 +15,7 @@ import com.ss.moviehub.R
 import com.ss.moviehub.UI.Fragments.LibraryFragmentDirections
 import com.ss.moviehub.UI.Fragments.MoviesFragmentDirections
 import com.ss.moviehub.UI.Fragments.SearchFragmentDirections
-import kotlinx.android.synthetic.main.item_movie.view.*
+import kotlinx.android.synthetic.main.row_item_movie.view.*
 
 class MovieAdapter(private val fragmentName: String) :
     RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
@@ -29,20 +29,21 @@ class MovieAdapter(private val fragmentName: String) :
                 val position = adapterPosition
 
                 val movieAction =
-                    MoviesFragmentDirections.actionMoviesFragmentToDetailsFragment(differ.currentList[position])
+                    MoviesFragmentDirections.actionMoviesFragmentToDetailsFragment(
+                        differ.currentList[position],
+                        "MovieFragment"
+                    )
                 val searchAction =
-                    SearchFragmentDirections.actionSearchFragmentToDetailsFragment(differ.currentList[position])
-                val libraryAction =
-                    LibraryFragmentDirections.actionLibraryFragmentToDetailsFragment(differ.currentList[position])
+                    SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
+                        differ.currentList[position],
+                        "MovieFragment"
+                    )
 
                 if (fragmentName == "MovieFragment")
                     itemView.findNavController().navigate(movieAction)
 
                 if (fragmentName == "SearchFragment")
                     itemView.findNavController().navigate(searchAction)
-
-                if (fragmentName == "LibraryFragment")
-                    itemView.findNavController().navigate(libraryAction)
             }
         }
     }
@@ -61,7 +62,7 @@ class MovieAdapter(private val fragmentName: String) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_movie, parent, false)
+            .inflate(R.layout.row_item_movie, parent, false)
 
         return ViewHolder(view)
     }

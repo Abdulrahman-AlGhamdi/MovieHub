@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -62,7 +63,7 @@ class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
             .into(poster)
 
         ratingNumber.text = arguments.selectedMovie.vote_average.toString()
-        rating.rating = (arguments.selectedMovie.vote_average.toFloat()) / 2
+        rating.rating = arguments.selectedMovie.vote_average.toFloat() / 2
     }
 
     private fun addToLibrary() {
@@ -72,6 +73,11 @@ class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 arguments.selectedMovie.added = true
                 viewModel.addMovieToLibrary(arguments.selectedMovie)
                 Snackbar.make(requireView(), "Added to Library", Snackbar.LENGTH_SHORT).show()
+                when (arguments.fragment){
+                    "MovieFragment" -> findNavController().navigate(R.id.action_detailsFragment_to_moviesFragment)
+                    "SearchFragment" -> findNavController().navigate(R.id.action_detailsFragment_to_searchFragment)
+                    "LibraryFragment" -> findNavController().navigate(R.id.action_detailsFragment_to_libraryFragment)
+                }
             }
         } else {
             addToLibrary.visibility = View.GONE
@@ -85,6 +91,7 @@ class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
             deleteFromLibrary.setOnClickListener {
                 arguments.selectedMovie.added = false
                 viewModel.deleteMovieFromLibrary(arguments.selectedMovie)
+                findNavController().navigate(R.id.action_detailsFragment_to_libraryFragment)
                 Snackbar.make(requireView(), "Movie Successfully Deleted", Snackbar.LENGTH_SHORT)
                     .setAction("Undo") {
                         viewModel.addMovieToLibrary(arguments.selectedMovie)

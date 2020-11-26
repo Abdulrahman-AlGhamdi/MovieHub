@@ -40,5 +40,17 @@
         <argument
             android:name="selectedMovie"
             app:argType="com.ss.moviehub.Models.Result" />
+        <argument
+            android:name="fragment"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detailsFragment_to_libraryFragment"
+            app:destination="@id/libraryFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_moviesFragment"
+            app:destination="@id/moviesFragment" />
     </fragment>
 </navigation>
