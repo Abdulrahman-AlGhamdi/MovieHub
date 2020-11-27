@@ -57,5 +57,9 @@ class MovieViewModel(private var repository: MovieRepository) : ViewModel() {
         repository.deleteMovieLibrary(result)
     }
 
+    fun deleteAllMovies() = viewModelScope.launch {
+        repository.deleteAllMovies()
+    }
+
     fun getLibraryMovies() = repository.getLibraryMovies()
 }

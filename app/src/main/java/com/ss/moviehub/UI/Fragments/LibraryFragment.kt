@@ -1,15 +1,15 @@
 package com.ss.moviehub.UI.Fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
+import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.ss.moviehub.Adapters.LibraryAdapter
-import com.ss.moviehub.Adapters.MovieAdapter
 import com.ss.moviehub.Models.Result
 import com.ss.moviehub.R
 import com.ss.moviehub.UI.MainActivity
@@ -18,6 +18,7 @@ import com.ss.moviehub.UI.ViewModel.MovieViewModel
 class LibraryFragment : Fragment(R.layout.fragment_library) {
 
     private lateinit var viewModel: MovieViewModel
+    private lateinit var deleteAllMovies: ImageView
     private lateinit var libraryAdapter: LibraryAdapter
     private lateinit var libraryList: MutableList<Result>
     private lateinit var libraryRecyclerView: RecyclerView
@@ -28,13 +29,15 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
         initViews()
         bindLibraryMovies()
         deleteFromLibrary()
+        deleteAllMovies()
     }
 
     private fun initViews() {
-        viewModel = (activity as MainActivity).viewModel
         libraryList = mutableListOf()
         libraryAdapter = LibraryAdapter()
+        viewModel = (activity as MainActivity).viewModel
         libraryRecyclerView = view?.findViewById(R.id.library_movies)!!
+        deleteAllMovies = requireView().findViewById(R.id.delete_all_tasks)
         libraryRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
@@ -73,5 +76,22 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
         }
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(libraryRecyclerView)
+    }
+
+    private fun deleteAllMovies() {
+        deleteAllMovies.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(requireActivity())
+                .setCancelable(false)
+                .setPositiveButton("Ok") { _, _ ->
+                    viewModel.deleteAllMovies()
+                }
+                .setNegativeButton("Cancel") { _, _ ->
+
+                }
+
+            val alert = dialogBuilder.create()
+            alert.setTitle("Delete all the movies?")
+            alert.show()
+        }
     }
 }

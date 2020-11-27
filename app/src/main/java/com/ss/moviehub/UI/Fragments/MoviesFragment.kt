@@ -61,6 +61,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     private fun getMovies() {
         viewModel.popularMoviesLiveData.observe(viewLifecycleOwner, {
             popularRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            popularMoviesHasPoster.clear()
             for (movie in it) {
                 if (movie.poster_path != null) {
                     popularMoviesHasPoster.add(movie)
@@ -72,6 +73,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
         viewModel.topRatedMoviesLiveData.observe(viewLifecycleOwner, {
             topRatedRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            topRatedMoviesHasPoster.clear()
             for (movie in it) {
                 if (movie.poster_path != null) {
                     topRatedMoviesHasPoster.add(movie)
@@ -83,6 +85,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
         viewModel.upcomingMoviesLiveData.observe(viewLifecycleOwner, {
             upcomingRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            upcomingMoviesHasPoster.clear()
             for (movie in it) {
                 if (movie.poster_path != null) {
                     upcomingMoviesHasPoster.add(movie)

@@ -35,4 +35,7 @@ class   MovieRepository(var database: MovieDatabase) {
 
     fun getLibraryMovies() =
         database.movieDao().getLibraryMovies()
+
+    suspend fun deleteAllMovies() =
+        database.movieDao().deleteAllMovies()
 }

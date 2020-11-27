@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
-    private lateinit var moviesHasPoster: MutableList<Result>
+    private lateinit var moviesPoster: MutableList<Result>
     private lateinit var search: SearchView
     private lateinit var searchAdapter: MovieAdapter
     private lateinit var searchRecyclerView: RecyclerView
@@ -29,7 +29,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun init() {
-        moviesHasPoster = mutableListOf()
+        moviesPoster = mutableListOf()
         viewModel = (activity as MainActivity).viewModel
         search = requireView().findViewById(R.id.search_movie)
         searchAdapter = MovieAdapter("SearchFragment")
@@ -43,12 +43,13 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 viewModel.getSearchMovie(query.toString())
                 viewModel.searchedMoviesLiveData.observe(viewLifecycleOwner, {
                     searchRecyclerView.layoutManager = GridLayoutManager(context, 3)
+                    moviesPoster.clear()
                     for (movie in it){
                         if (movie.poster_path != null){
-                            moviesHasPoster.add(movie)
+                            moviesPoster.add(movie)
                         }
                     }
-                    searchAdapter.differ.submitList(moviesHasPoster)
+                    searchAdapter.differ.submitList(moviesPoster)
                     searchRecyclerView.adapter = searchAdapter
                 })
                 return false
