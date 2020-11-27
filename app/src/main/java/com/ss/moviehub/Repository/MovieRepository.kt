@@ -7,7 +7,7 @@ import com.ss.moviehub.Utils.Constants.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MovieRepository(var database: MovieDatabase) {
+class   MovieRepository(var database: MovieDatabase) {
 
     private val api: MovieAPI = Retrofit.Builder()
         .baseUrl(BASE_URL)

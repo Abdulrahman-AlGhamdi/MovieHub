@@ -60,16 +60,12 @@ class MovieAdapter(private val fragmentName: String) :
 
     val differ = AsyncListDiffer(this, differCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.row_item_movie, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.row_item_movie, parent, false)
+        )
 
-        return ViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-        return differ.currentList.size
-    }
+    override fun getItemCount() = differ.currentList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 

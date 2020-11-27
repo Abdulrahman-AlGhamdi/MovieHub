@@ -70,10 +70,27 @@ class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
         if (!arguments.selectedMovie.added) {
             addToLibrary.visibility = View.VISIBLE
             addToLibrary.setOnClickListener {
+                if (arguments.selectedMovie.title == null)
+                    arguments.selectedMovie.title = ""
+
+                if (arguments.selectedMovie.overview == null)
+                    arguments.selectedMovie.overview = ""
+
+                if (arguments.selectedMovie.release_date == null)
+                    arguments.selectedMovie.release_date = ""
+
+                if (arguments.selectedMovie.backdrop_path == null)
+                    arguments.selectedMovie.backdrop_path = ""
+
+                if (arguments.selectedMovie.poster_path == null)
+                    arguments.selectedMovie.poster_path = ""
+
+                if (arguments.selectedMovie.vote_average == null)
+                    arguments.selectedMovie.vote_average = 0.0
                 arguments.selectedMovie.added = true
                 viewModel.addMovieToLibrary(arguments.selectedMovie)
                 Snackbar.make(requireView(), "Added to Library", Snackbar.LENGTH_SHORT).show()
-                when (arguments.fragment){
+                when (arguments.fragment) {
                     "MovieFragment" -> findNavController().navigate(R.id.action_detailsFragment_to_moviesFragment)
                     "SearchFragment" -> findNavController().navigate(R.id.action_detailsFragment_to_searchFragment)
                     "LibraryFragment" -> findNavController().navigate(R.id.action_detailsFragment_to_libraryFragment)
@@ -82,7 +99,6 @@ class DetailsFragment : Fragment(R.layout.fragment_movie_details) {
         } else {
             addToLibrary.visibility = View.GONE
         }
-
     }
 
     private fun deleteFromLibrary() {

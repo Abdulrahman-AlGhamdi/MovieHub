@@ -31,12 +31,10 @@ class LibraryAdapter : RecyclerView.Adapter<LibraryAdapter.ViewHolder>() {
 
     val differ = AsyncListDiffer(this, differCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LibraryAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
+        LayoutInflater.from(parent.context)
             .inflate(R.layout.row_library_item, parent, false)
-
-        return ViewHolder(view)
-    }
+    )
 
     override fun onBindViewHolder(holder: LibraryAdapter.ViewHolder, position: Int) {
         val movieItem = differ.currentList[position]
@@ -52,9 +50,7 @@ class LibraryAdapter : RecyclerView.Adapter<LibraryAdapter.ViewHolder>() {
             .into(holder.poster)
     }
 
-    override fun getItemCount(): Int {
-        return differ.currentList.size
-    }
+    override fun getItemCount() = differ.currentList.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

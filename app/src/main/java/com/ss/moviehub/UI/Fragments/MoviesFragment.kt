@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ss.moviehub.*
 import com.ss.moviehub.Adapters.MovieAdapter
+import com.ss.moviehub.Models.Result
 import com.ss.moviehub.UI.MainActivity
 import com.ss.moviehub.UI.ViewModel.MovieViewModel
 
@@ -24,6 +25,11 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     private lateinit var popularMovieAdapter: MovieAdapter
     private lateinit var topRatedMovieAdapter: MovieAdapter
     private lateinit var upcomingMovieAdapter: MovieAdapter
+
+    // Movies Has Poster
+    private lateinit var popularMoviesHasPoster: MutableList<Result>
+    private lateinit var topRatedMoviesHasPoster: MutableList<Result>
+    private lateinit var upcomingMoviesHasPoster: MutableList<Result>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,24 +51,44 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
         // View Model
         viewModel = (activity as MainActivity).viewModel
+
+        // Movies Has Poster
+        popularMoviesHasPoster = mutableListOf()
+        topRatedMoviesHasPoster = mutableListOf()
+        upcomingMoviesHasPoster = mutableListOf()
     }
 
     private fun getMovies() {
         viewModel.popularMoviesLiveData.observe(viewLifecycleOwner, {
             popularRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            popularMovieAdapter.differ.submitList(it)
+            for (movie in it) {
+                if (movie.poster_path != null) {
+                    popularMoviesHasPoster.add(movie)
+                }
+            }
+            popularMovieAdapter.differ.submitList(popularMoviesHasPoster)
             popularRecyclerView.adapter = popularMovieAdapter
         })
 
         viewModel.topRatedMoviesLiveData.observe(viewLifecycleOwner, {
             topRatedRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            topRatedMovieAdapter.differ.submitList(it)
+            for (movie in it) {
+                if (movie.poster_path != null) {
+                    topRatedMoviesHasPoster.add(movie)
+                }
+            }
+            topRatedMovieAdapter.differ.submitList(topRatedMoviesHasPoster)
             topRatedRecyclerView.adapter = topRatedMovieAdapter
         })
 
         viewModel.upcomingMoviesLiveData.observe(viewLifecycleOwner, {
             upcomingRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            upcomingMovieAdapter.differ.submitList(it)
+            for (movie in it) {
+                if (movie.poster_path != null) {
+                    upcomingMoviesHasPoster.add(movie)
+                }
+            }
+            upcomingMovieAdapter.differ.submitList(upcomingMoviesHasPoster)
             upcomingRecyclerView.adapter = upcomingMovieAdapter
         })
     }
