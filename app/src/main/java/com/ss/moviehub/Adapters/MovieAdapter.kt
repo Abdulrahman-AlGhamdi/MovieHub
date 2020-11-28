@@ -36,7 +36,7 @@ class MovieAdapter(private val fragmentName: String) :
                 val searchAction =
                     SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
                         differ.currentList[position],
-                        "MovieFragment"
+                        "SearchFragment"
                     )
 
                 if (fragmentName == "MovieFragment")
@@ -60,10 +60,9 @@ class MovieAdapter(private val fragmentName: String) :
 
     val differ = AsyncListDiffer(this, differCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.row_item_movie, parent, false)
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.row_item_movie, parent, false)
+    )
 
     override fun getItemCount() = differ.currentList.size
 
