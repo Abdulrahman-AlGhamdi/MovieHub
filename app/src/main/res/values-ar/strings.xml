@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MovieHub</string>
+
+    <!-- Fragment Names -->
+    <string name="movies">الأفلام</string>
+    <string name="search">بحث</string>
+    <string name="library">المكتبة</string>
+    <string name="details">تفاصيل</string>
+    <string name="settings">الإعدادات</string>
+
+    <!-- Movies Fragment Strings -->
+    <string name="popular">أكثر شعبية</string>
+    <string name="most_popular_movies">أكثر الأفلام شهرة</string>
+    <string name="top_rated">الأعلى تقييما</string>
+    <string name="highest_rated_movies">أعلى الأفلام تقييما في جميع الأوقات</string>
+    <string name="upcoming">القادم</string>
+    <string name="stay_updated">إبقى على اطلاع بأحدث الأفلام</string>
+
+    <!-- Search Fragment -->
+    <string name="search_result">آخر بحث عن:</string>
+    <string name="search_result_for">آخر بحث عن: %1$s</string>
+
+    <!-- Library Fragment -->
+    <string name="your_library_list">قائمة مكتبتك</string>
+    <string name="add_to_library">إضافة إلى المكتبة</string>
+    <string name="delete_from_library">حذف من المكتبة</string>
+    <string name="delete_all_movies">حذف جميع الأفلام</string>
+
+    <!-- Settings Preference Strings -->
+    <string name="preference_application_configuration">إعدادات التطبيق</string>
+    <string name="preference_about">حول</string>
+    <string name="preference_dark_mode_title">الوضع الليلي</string>
+    <string name="preference_dark_mode_summary_on">الوضع الليلي مفعل</string>
+    <string name="preference_dark_mode_summary_off">الوضع الليلي غير مفعل</string>
+    <string name="preference_language_title">اللغة</string>
+    <string name="preference_language_summary_on">عربي</string>
+    <string name="preference_language_summary_off">إنجليزي</string>
+    <string name="preference_contact_me_title">تواصل معي</string>
+    <string name="preference_contact_me_summary">أي اقتراحات او مشاكل من فضلك لا تتردد في التواصل معي</string>
+    <string name="preference_version_summary">%1$s (%2$d)</string>
+    <string name="preference_version_title">اصدار التطبيق</string>
+
+</resources>

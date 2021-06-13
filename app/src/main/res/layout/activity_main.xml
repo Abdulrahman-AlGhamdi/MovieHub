@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.MainActivity">
+    tools:context=".ui.MainActivity">
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/fragment_container"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -22,12 +22,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:layout_alignParentBottom="true"
-        android:background="?android:windowBackground"
-        app:backgroundTint="@color/colorPrimary"
-        app:itemIconTint="#FFFFFF"
-        app:itemTextColor="#FFFFFF"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
