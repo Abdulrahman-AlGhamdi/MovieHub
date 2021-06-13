@@ -1,6 +1,6 @@
 # Movie Hub
 
-Every thing about movies powered by TMDB database api
+Everything about movies powered by TMDB database api
 
 The application contains:
 * Popular, Top Rated and Upcoming movies.
@@ -12,11 +12,11 @@ The application contains:
 ## Application Images
 
 <div style="display:flex;">
-<img alt="App image" src="https://i.ibb.co/Br8WVdj/1.png" width="10%">
-<img alt="App image" src="https://i.ibb.co/0J0Vyth/2.png" width="10%">
-<img alt="App image" src="https://i.ibb.co/mN2JbzJ/3.png" width="10%">
-<img alt="App image" src="https://i.ibb.co/TWYGmYL/4.png" width="10%">
-<img alt="App image" src="https://i.ibb.co/GTjp4N6/5.png" width="10%">
+<img alt="App image" src="https://i.ibb.co/RCzmLjf/1.png" width="10%">
+<img alt="App image" src="https://i.ibb.co/7WL1Cv1/2.png" width="10%">
+<img alt="App image" src="https://i.ibb.co/1v96LG2/3.png" width="10%">
+<img alt="App image" src="https://i.ibb.co/wws8hL7/4.png" width="10%">
+<img alt="App image" src="https://i.ibb.co/17RNLTD/5.png" width="10%">
 </div>
 
 ## License
