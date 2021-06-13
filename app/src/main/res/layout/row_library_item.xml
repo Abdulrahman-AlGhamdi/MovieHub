@@ -26,12 +26,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="14sp"
-            android:textStyle="bold"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/poster"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
@@ -43,10 +41,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textSize="12sp"
-            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintBottom_toTopOf="@+id/language"
             app:layout_constraintStart_toEndOf="@+id/poster"
             app:layout_constraintTop_toBottomOf="@+id/title"
+            app:layout_constraintVertical_chainStyle="packed"
             tool:text="Movie Release Date" />
 
         <TextView

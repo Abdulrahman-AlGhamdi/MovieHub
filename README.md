@@ -1,6 +1,6 @@
-# MovieHub
+# Movie Hub
 
-Every thing about movies using powered by TMDB database api
+Every thing about movies powered by TMDB database api
 
 The application contains:
 * Popular, Top Rated and Upcoming movies.

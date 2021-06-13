@@ -67,6 +67,7 @@ class SearchFragment : Fragment() {
             viewModel.getSearchMovies(query, 1).collect { status ->
                 when (status) {
                     is MoviesRepository.MoviesStatus.MoviesFailed ->
+                        if (status.message.isNotEmpty())
                         Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).show()
                     is MoviesRepository.MoviesStatus.MoviesSuccessful -> {
                         binding.searchList.layoutManager = GridLayoutManager(context, 2)
