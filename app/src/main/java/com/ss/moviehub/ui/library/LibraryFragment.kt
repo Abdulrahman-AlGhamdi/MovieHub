@@ -60,8 +60,8 @@ class LibraryFragment : Fragment() {
                 val result = adapter.differ.currentList[viewHolder.adapterPosition]
                 viewModel.deleteMovieFromLibrary(result)
                 result.added = false
-                Snackbar.make(requireView(), "Movie Successfully Deleted", Snackbar.LENGTH_SHORT).apply {
-                    this.setAction("Undo") {
+                Snackbar.make(requireView(), getString(R.string.successfully_deleted), Snackbar.LENGTH_SHORT).apply {
+                    this.setAction(getString(R.string.undo)) {
                         viewModel.addMovieToLibrary(result)
                         result.added = true
                     }
@@ -81,8 +81,8 @@ class LibraryFragment : Fragment() {
         if (item.itemId == R.id.delete_all_menu)
             AlertDialog.Builder(requireActivity()).apply {
                 this.setCancelable(false)
-                this.setNegativeButton("Cancel", null)
-                this.setPositiveButton("Ok") { _, _ ->
+                this.setNegativeButton(getString(R.string.cancel), null)
+                this.setPositiveButton(getString(R.string.ok)) { _, _ ->
                     viewModel.deleteAllMovies()
                 }
                 this.create().apply {

@@ -24,8 +24,12 @@
     <!-- Library Fragment -->
     <string name="your_library_list">قائمة مكتبتك</string>
     <string name="add_to_library">إضافة إلى المكتبة</string>
-    <string name="delete_from_library">حذف من المكتبة</string>
     <string name="delete_all_movies">حذف جميع الأفلام</string>
+    <string name="delete_from_library">حذف من المكتبة</string>
+    <string name="successfully_deleted">تم حذف الفلم بنجاح</string>
+    <string name="cancel">إلغاء</string>
+    <string name="undo">تراجع</string>
+    <string name="ok">موافق</string>
 
     <!-- Settings Preference Strings -->
     <string name="preference_application_configuration">إعدادات التطبيق</string>
@@ -40,5 +44,8 @@
     <string name="preference_contact_me_summary">أي اقتراحات او مشاكل من فضلك لا تتردد في التواصل معي</string>
     <string name="preference_version_summary">%1$s (%2$d)</string>
     <string name="preference_version_title">اصدار التطبيق</string>
+
+    <!-- Error Strings -->
+    <string name="error_no_result">لا توجد نتائج</string>
 
 </resources>
