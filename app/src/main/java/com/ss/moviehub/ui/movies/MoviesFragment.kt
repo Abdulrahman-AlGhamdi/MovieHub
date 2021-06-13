@@ -1,5 +1,8 @@
 package com.ss.moviehub.ui.movies
 
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -11,6 +14,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.FragmentMoviesBinding
 import com.ss.moviehub.repository.MoviesRepository
+import com.ss.moviehub.ui.movies.MoviesFragment.ViewState.NO_INTERNET
+import com.ss.moviehub.ui.movies.MoviesFragment.ViewState.WITH_INTERNET
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -30,10 +35,18 @@ class MoviesFragment : Fragment() {
     ): View {
         _binding = FragmentMoviesBinding.inflate(inflater, container, false)
 
-        setHasOptionsMenu(true)
-        getMovies()
+        init()
 
         return binding.root
+    }
+
+    private fun init() {
+        setHasOptionsMenu(true)
+        val manager = requireActivity().getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val capabilities = manager.getNetworkCapabilities(manager.activeNetwork)
+            if (capabilities != null) customView(WITH_INTERNET) else customView(NO_INTERNET)
+        } else if (manager.activeNetworkInfo != null)  customView(WITH_INTERNET) else customView(NO_INTERNET)
     }
 
     private fun getMovies() {
@@ -80,6 +93,42 @@ class MoviesFragment : Fragment() {
         }
     }
 
+    private fun customView(state: ViewState) {
+        when (state) {
+            NO_INTERNET -> {
+                binding.popularHeader.visibility = View.GONE
+                binding.popularMessage.visibility = View.GONE
+                binding.popularList.visibility = View.GONE
+                binding.topRatedHeader.visibility = View.GONE
+                binding.topRatedMessage.visibility = View.GONE
+                binding.topRatedList.visibility = View.GONE
+                binding.upcomingHeader.visibility = View.GONE
+                binding.upcomingMessage.visibility = View.GONE
+                binding.upcomingList.visibility = View.GONE
+                binding.noNetwork.visibility = View.VISIBLE
+                binding.noNetwork.setOnClickListener { init() }
+            }
+            WITH_INTERNET -> {
+                binding.noNetwork.visibility = View.GONE
+                binding.popularHeader.visibility = View.VISIBLE
+                binding.popularMessage.visibility = View.VISIBLE
+                binding.popularList.visibility = View.VISIBLE
+                binding.topRatedHeader.visibility = View.VISIBLE
+                binding.topRatedMessage.visibility = View.VISIBLE
+                binding.topRatedList.visibility = View.VISIBLE
+                binding.upcomingHeader.visibility = View.VISIBLE
+                binding.upcomingMessage.visibility = View.VISIBLE
+                binding.upcomingList.visibility = View.VISIBLE
+                getMovies()
+            }
+        }
+    }
+
+    enum class ViewState {
+        NO_INTERNET,
+        WITH_INTERNET
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.movies_menu, menu)
@@ -96,9 +145,9 @@ class MoviesFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        popularJob.cancel()
-        topRatedJob.cancel()
-        upcomingJop.cancel()
+        if (::popularJob.isInitialized) popularJob.cancel()
+        if (::topRatedJob.isInitialized) topRatedJob.cancel()
+        if (::upcomingJop.isInitialized) upcomingJop.cancel()
         _binding = null
     }
 }
