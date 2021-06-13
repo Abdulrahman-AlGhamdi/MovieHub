@@ -16,6 +16,7 @@
     <string name="highest_rated_movies">أعلى الأفلام تقييما في جميع الأوقات</string>
     <string name="upcoming">القادم</string>
     <string name="stay_updated">إبقى على اطلاع بأحدث الأفلام</string>
+    <string name="no_internet_connection_retry">لا يوجد إتصال بالإنترنت, أعد المحاولة…</string>
 
     <!-- Search Fragment -->
     <string name="search_result">آخر بحث عن:</string>

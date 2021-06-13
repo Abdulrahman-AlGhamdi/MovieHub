@@ -86,7 +86,7 @@ class LibraryFragment : Fragment() {
                     viewModel.deleteAllMovies()
                 }
                 this.create().apply {
-                    this.setTitle("Delete all the movies?")
+                    this.setTitle(getString(R.string.delete_all_movies))
                     this.show()
                 }
             }
