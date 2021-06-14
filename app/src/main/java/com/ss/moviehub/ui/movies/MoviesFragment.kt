@@ -54,7 +54,9 @@ class MoviesFragment : Fragment() {
             viewModel.getPopularMovie().collect { status ->
                 when (status) {
                     is MoviesRepository.MoviesStatus.MoviesFailed ->
-                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
+                            this.setAnchorView(R.id.navigation_bar)
+                        }.show()
                     is MoviesRepository.MoviesStatus.MoviesSuccessful -> {
                         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                         binding.popularList.layoutManager = layoutManager
@@ -68,7 +70,9 @@ class MoviesFragment : Fragment() {
             viewModel.getTopRatedMovie().collect { status ->
                 when (status) {
                     is MoviesRepository.MoviesStatus.MoviesFailed ->
-                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
+                            this.setAnchorView(R.id.navigation_bar)
+                        }.show()
                     is MoviesRepository.MoviesStatus.MoviesSuccessful -> {
                         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                         binding.topRatedList.layoutManager = layoutManager
@@ -82,7 +86,9 @@ class MoviesFragment : Fragment() {
             viewModel.getUpcomingMovie().collect { status ->
                 when (status) {
                     is MoviesRepository.MoviesStatus.MoviesFailed ->
-                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
+                            this.setAnchorView(R.id.navigation_bar)
+                        }.show()
                     is MoviesRepository.MoviesStatus.MoviesSuccessful -> {
                         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                         binding.upcomingList.layoutManager = layoutManager

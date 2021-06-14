@@ -24,8 +24,11 @@
 
     <!-- Library Fragment -->
     <string name="your_library_list">قائمة مكتبتك</string>
-    <string name="add_to_library">إضافة إلى المكتبة</string>
     <string name="delete_all_movies">حذف جميع الأفلام</string>
+
+    <!-- Details Fragment -->
+    <string name="add_to_library">إضافة إلى المكتبة</string>
+    <string name="successfully_added">تم إضافة الفلم بنجاح</string>
     <string name="delete_from_library">حذف من المكتبة</string>
     <string name="successfully_deleted">تم حذف الفلم بنجاح</string>
     <string name="cancel">إلغاء</string>
