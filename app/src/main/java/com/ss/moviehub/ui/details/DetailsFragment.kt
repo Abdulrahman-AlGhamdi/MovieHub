@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.snackbar.Snackbar
+import com.ss.moviehub.R
 import com.ss.moviehub.databinding.FragmentDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -64,7 +65,9 @@ class DetailsFragment : Fragment() {
         binding.addToLibrary.setOnClickListener {
             arguments.movie.added = true
             viewModel.addMovieToLibrary(arguments.movie)
-            Snackbar.make(requireView(), "Added to Library", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), getString(R.string.successfully_added), Snackbar.LENGTH_SHORT).apply {
+                this.setAnchorView(R.id.navigation_bar)
+            }.show()
             addOrRemoveMovie()
         }
     }
@@ -75,11 +78,13 @@ class DetailsFragment : Fragment() {
         binding.deleteFromLibrary.setOnClickListener {
             arguments.movie.added = false
             viewModel.deleteMovieFromLibrary(arguments.movie)
-            Snackbar.make(requireView(), "Movie Successfully Deleted", Snackbar.LENGTH_SHORT)
-                .setAction("Undo") {
+            Snackbar.make(requireView(), R.string.successfully_deleted, Snackbar.LENGTH_SHORT).apply {
+                this.setAction(R.string.undo) {
                     viewModel.addMovieToLibrary(arguments.movie)
                     arguments.movie.added = true
-                }.show()
+                }
+                this.setAnchorView(R.id.navigation_bar)
+            }.show()
             addOrRemoveMovie()
         }
     }

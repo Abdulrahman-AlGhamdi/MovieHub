@@ -65,6 +65,7 @@ class LibraryFragment : Fragment() {
                         viewModel.addMovieToLibrary(result)
                         result.added = true
                     }
+                    this.setAnchorView(R.id.navigation_bar)
                 }.show()
             }
         }

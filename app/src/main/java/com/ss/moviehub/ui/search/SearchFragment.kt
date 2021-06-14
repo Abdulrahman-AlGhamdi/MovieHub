@@ -82,7 +82,9 @@ class SearchFragment : Fragment() {
                 when (status) {
                     is MoviesRepository.MoviesStatus.MoviesFailed ->
                         if (status.message.isNotEmpty())
-                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
+                            this.setAnchorView(R.id.navigation_bar)
+                        }.show()
                     is MoviesRepository.MoviesStatus.MoviesSuccessful -> {
                         binding.searchList.layoutManager = GridLayoutManager(requireContext(), 2)
                         binding.searchList.adapter = SearchAdapter(status.movieList)
