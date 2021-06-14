@@ -101,7 +101,7 @@ class SearchFragment : Fragment() {
                 binding.searchList.visibility = View.GONE
                 binding.searchResultFor.visibility = View.GONE
                 binding.noNetwork.visibility = View.VISIBLE
-                binding.noNetwork.setOnClickListener { init() }
+                binding.noNetworkButton.setOnClickListener { init() }
             }
             is WithInternet -> {
                 binding.noNetwork.visibility = View.GONE

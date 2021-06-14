@@ -15,7 +15,8 @@
     <string name="highest_rated_movies">Highest Rated Movies of All Times</string>
     <string name="upcoming">Upcoming</string>
     <string name="stay_updated">Stay Updated with the Latest Movies</string>
-    <string name="no_internet_connection_retry">No internet connection, Retry…</string>
+    <string name="no_internet_connection">No internet connection, please</string>
+    <string name="retry">Retry…</string>
 
     <!-- Search Fragment -->
     <string name="search_result">Last Search For:</string>
@@ -24,6 +25,7 @@
     <!-- Library Fragment -->
     <string name="your_library_list">Your Library List</string>
     <string name="delete_all_movies">Delete all movies</string>
+    <string name="empty_message">Add movies to show theme here</string>
 
     <!-- Details Fragment -->
     <string name="add_to_library">Add to Library</string>

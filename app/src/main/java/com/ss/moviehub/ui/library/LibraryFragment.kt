@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -29,7 +30,6 @@ class LibraryFragment : Fragment() {
     ): View {
         _binding = FragmentLibraryBinding.inflate(inflater, container, false)
 
-        setHasOptionsMenu(true)
         showLibraryMovies()
         deleteFromLibrary()
 
@@ -39,8 +39,26 @@ class LibraryFragment : Fragment() {
     private fun showLibraryMovies() {
         libraryJob = lifecycleScope.launchWhenCreated {
             viewModel.getLibraryMovies().collect {
-                adapter.differ.submitList(it)
-                binding.libraryList.adapter = adapter
+                when (it) {
+                    LibraryViewModel.LibraryMoviesState.EmptyList -> {
+                        binding.libraryHeader.visibility = View.GONE
+                        binding.libraryList.visibility = View.GONE
+                        binding.empty.visibility = View.VISIBLE
+                        binding.emptyButton.setOnClickListener {
+                            val directions = LibraryFragmentDirections
+                            val action = directions.actionLibraryFragmentToMoviesFragment()
+                            findNavController().navigate(action)
+                        }
+                    }
+                    is LibraryViewModel.LibraryMoviesState.LibraryList -> {
+                        setHasOptionsMenu(true)
+                        binding.empty.visibility = View.GONE
+                        binding.libraryHeader.visibility = View.VISIBLE
+                        binding.libraryList.visibility = View.VISIBLE
+                        adapter.differ.submitList(it.libraryList)
+                        binding.libraryList.adapter = adapter
+                    }
+                }
             }
         }
     }

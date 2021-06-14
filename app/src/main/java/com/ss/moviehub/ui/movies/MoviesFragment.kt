@@ -102,29 +102,13 @@ class MoviesFragment : Fragment() {
     private fun customView(state: ViewState) {
         when (state) {
             NO_INTERNET -> {
-                binding.popularHeader.visibility = View.GONE
-                binding.popularMessage.visibility = View.GONE
-                binding.popularList.visibility = View.GONE
-                binding.topRatedHeader.visibility = View.GONE
-                binding.topRatedMessage.visibility = View.GONE
-                binding.topRatedList.visibility = View.GONE
-                binding.upcomingHeader.visibility = View.GONE
-                binding.upcomingMessage.visibility = View.GONE
-                binding.upcomingList.visibility = View.GONE
+                binding.scrollView.visibility = View.GONE
                 binding.noNetwork.visibility = View.VISIBLE
-                binding.noNetwork.setOnClickListener { init() }
+                binding.noNetworkButton.setOnClickListener { init() }
             }
             WITH_INTERNET -> {
                 binding.noNetwork.visibility = View.GONE
-                binding.popularHeader.visibility = View.VISIBLE
-                binding.popularMessage.visibility = View.VISIBLE
-                binding.popularList.visibility = View.VISIBLE
-                binding.topRatedHeader.visibility = View.VISIBLE
-                binding.topRatedMessage.visibility = View.VISIBLE
-                binding.topRatedList.visibility = View.VISIBLE
-                binding.upcomingHeader.visibility = View.VISIBLE
-                binding.upcomingMessage.visibility = View.VISIBLE
-                binding.upcomingList.visibility = View.VISIBLE
+                binding.scrollView.visibility = View.VISIBLE
                 getMovies()
             }
         }
