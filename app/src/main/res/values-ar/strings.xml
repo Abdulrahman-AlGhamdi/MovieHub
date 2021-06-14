@@ -16,7 +16,8 @@
     <string name="highest_rated_movies">أعلى الأفلام تقييما في جميع الأوقات</string>
     <string name="upcoming">القادم</string>
     <string name="stay_updated">إبقى على اطلاع بأحدث الأفلام</string>
-    <string name="no_internet_connection_retry">لا يوجد إتصال بالإنترنت, أعد المحاولة…</string>
+    <string name="no_internet_connection">لا يوجد إتصال بالإنترنت</string>
+    <string name="retry">أعد المحاولة…</string>
 
     <!-- Search Fragment -->
     <string name="search_result">آخر بحث عن:</string>
@@ -25,6 +26,7 @@
     <!-- Library Fragment -->
     <string name="your_library_list">قائمة مكتبتك</string>
     <string name="delete_all_movies">حذف جميع الأفلام</string>
+    <string name="empty_message">أضف الافلام لإظهارها هنا</string>
 
     <!-- Details Fragment -->
     <string name="add_to_library">إضافة إلى المكتبة</string>

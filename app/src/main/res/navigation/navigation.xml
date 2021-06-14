@@ -26,9 +26,6 @@
         <action
             android:id="@+id/action_searchFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -40,8 +37,8 @@
             android:id="@+id/action_libraryFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
         <action
-            android:id="@+id/action_libraryFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            android:id="@+id/action_libraryFragment_to_moviesFragment"
+            app:destination="@id/moviesFragment" />
     </fragment>
 
     <fragment

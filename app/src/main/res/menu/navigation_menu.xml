@@ -3,16 +3,16 @@
 
     <item
         android:id="@+id/moviesFragment"
-        android:icon="@drawable/home_icon"
+        android:icon="@drawable/icon_home"
         android:title="@string/movies"/>
 
     <item
         android:id="@+id/searchFragment"
-        android:icon="@drawable/search_icon"
+        android:icon="@drawable/icon_search"
         android:title="@string/search"/>
 
     <item
         android:id="@+id/libraryFragment"
-        android:icon="@drawable/library_icon"
+        android:icon="@drawable/icon_library"
         android:title="@string/library"/>
 </menu>
