@@ -80,12 +80,12 @@ class SearchFragment : Fragment() {
         searchJob = lifecycleScope.launchWhenCreated {
             viewModel.getSearchMovies(query, 1).collect { status ->
                 when (status) {
-                    is MoviesRepository.MoviesStatus.MoviesFailed ->
+                    is MoviesRepository.ResponseStatus.Failed ->
                         if (status.message.isNotEmpty())
                         Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
                             this.setAnchorView(R.id.navigation_bar)
                         }.show()
-                    is MoviesRepository.MoviesStatus.MoviesSuccessful -> {
+                    is MoviesRepository.ResponseStatus.Successful -> {
                         binding.searchList.layoutManager = GridLayoutManager(requireContext(), 2)
                         binding.searchList.adapter = SearchAdapter(status.movieList)
                     }

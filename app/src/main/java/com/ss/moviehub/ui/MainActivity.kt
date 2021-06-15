@@ -28,6 +28,26 @@ class MainActivity : AppCompatActivity() {
         val configuration = AppBarConfiguration(setOf(R.id.moviesFragment, R.id.searchFragment, R.id.libraryFragment))
         setupActionBarWithNavController(navController, configuration)
         binding.navigationBar.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.moviesFragment -> {
+                    binding.navigationBar.menu.getItem(0).isEnabled = false
+                    binding.navigationBar.menu.getItem(1).isEnabled = true
+                    binding.navigationBar.menu.getItem(2).isEnabled = true
+                }
+                R.id.searchFragment -> {
+                    binding.navigationBar.menu.getItem(0).isEnabled = true
+                    binding.navigationBar.menu.getItem(1).isEnabled = false
+                    binding.navigationBar.menu.getItem(2).isEnabled = true
+                }
+                R.id.libraryFragment -> {
+                    binding.navigationBar.menu.getItem(0).isEnabled = true
+                    binding.navigationBar.menu.getItem(1).isEnabled = true
+                    binding.navigationBar.menu.getItem(2).isEnabled = false
+                }
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -53,11 +53,11 @@ class MoviesFragment : Fragment() {
         popularJob = lifecycleScope.launchWhenCreated {
             viewModel.getPopularMovie().collect { status ->
                 when (status) {
-                    is MoviesRepository.MoviesStatus.MoviesFailed ->
+                    is MoviesRepository.ResponseStatus.Failed ->
                         Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
                             this.setAnchorView(R.id.navigation_bar)
                         }.show()
-                    is MoviesRepository.MoviesStatus.MoviesSuccessful -> {
+                    is MoviesRepository.ResponseStatus.Successful -> {
                         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                         binding.popularList.layoutManager = layoutManager
                         binding.popularList.adapter = MovieAdapter(status.movieList)
@@ -69,11 +69,11 @@ class MoviesFragment : Fragment() {
         topRatedJob = lifecycleScope.launchWhenCreated {
             viewModel.getTopRatedMovie().collect { status ->
                 when (status) {
-                    is MoviesRepository.MoviesStatus.MoviesFailed ->
+                    is MoviesRepository.ResponseStatus.Failed ->
                         Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
                             this.setAnchorView(R.id.navigation_bar)
                         }.show()
-                    is MoviesRepository.MoviesStatus.MoviesSuccessful -> {
+                    is MoviesRepository.ResponseStatus.Successful -> {
                         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                         binding.topRatedList.layoutManager = layoutManager
                         binding.topRatedList.adapter = MovieAdapter(status.movieList)
@@ -85,11 +85,11 @@ class MoviesFragment : Fragment() {
         upcomingJop = lifecycleScope.launchWhenCreated {
             viewModel.getUpcomingMovie().collect { status ->
                 when (status) {
-                    is MoviesRepository.MoviesStatus.MoviesFailed ->
+                    is MoviesRepository.ResponseStatus.Failed ->
                         Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
                             this.setAnchorView(R.id.navigation_bar)
                         }.show()
-                    is MoviesRepository.MoviesStatus.MoviesSuccessful -> {
+                    is MoviesRepository.ResponseStatus.Successful -> {
                         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                         binding.upcomingList.layoutManager = layoutManager
                         binding.upcomingList.adapter = MovieAdapter(status.movieList)
