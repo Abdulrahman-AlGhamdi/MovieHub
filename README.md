@@ -9,6 +9,9 @@ The application contains:
 * Details page for every movie that will show you [name, description, rate, poster and etc] of the movie.
 * Settings page to change to dark mode or switch to arabic langauge or send me any thing via the email.
 
+<a href='https://play.google.com/store/apps/details?id=com.ss.moviehub'><img alt='Get it on Google Play' 
+src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='80px'/></a>
+
 ## Application Images
 
 <div style="display:flex;">
