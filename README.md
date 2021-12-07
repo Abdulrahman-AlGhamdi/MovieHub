@@ -32,7 +32,7 @@
 <img alt="App image" src="https://i.ibb.co/RCzmLjf/1.png" width="10%">
 <img alt="App image" src="https://i.ibb.co/7WL1Cv1/2.png" width="10%">
 <img alt="App image" src="https://i.ibb.co/1v96LG2/3.png" width="10%">
-<img alt="App image" src="https://i.ibb.co/wws8hL7/4.png" width="10%">
+<img alt="App image" src="https://i.ibb.co/4WFb3sz/4.png" width="10%">
 <img alt="App image" src="https://i.ibb.co/17RNLTD/5.png" width="10%">
 </div>
 
