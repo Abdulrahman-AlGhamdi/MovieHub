@@ -1,4 +1,4 @@
-<div align="center"><img src="https://i.ibb.co/RhsWf0q/icon.png" width="20%"></div>
+<div align="center"><img src="./googlePlayAssets/icon/icon.png" width="20%"></div>
 
 <h3 align="center">Movie Hub</h3>
 
@@ -29,11 +29,11 @@
 <h3 align="center">Application Images</h3>
 
 <div align="center">
-<img alt="App image" src="https://i.ibb.co/RCzmLjf/1.png" width="10%">
-<img alt="App image" src="https://i.ibb.co/7WL1Cv1/2.png" width="10%">
-<img alt="App image" src="https://i.ibb.co/1v96LG2/3.png" width="10%">
-<img alt="App image" src="https://i.ibb.co/4WFb3sz/4.png" width="10%">
-<img alt="App image" src="https://i.ibb.co/17RNLTD/5.png" width="10%">
+<img alt="App image" src="./googlePlayAssets/screenshots/1.png" width="10%">
+<img alt="App image" src="./googlePlayAssets/screenshots/2.png" width="10%">
+<img alt="App image" src="./googlePlayAssets/screenshots/3.png" width="10%">
+<img alt="App image" src="./googlePlayAssets/screenshots/4.png" width="10%">
+<img alt="App image" src="./googlePlayAssets/screenshots/5.png" width="10%">
 </div>
 
 ##
