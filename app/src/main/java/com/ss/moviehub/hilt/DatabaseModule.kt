@@ -2,6 +2,7 @@ package com.ss.moviehub.hilt
 
 import android.content.Context
 import androidx.room.Room
+import com.ss.moviehub.database.MovieDao
 import com.ss.moviehub.database.MovieDatabase
 import dagger.Module
 import dagger.Provides
@@ -16,10 +17,10 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context) =
+    fun provideDatabase(@ApplicationContext context: Context): MovieDatabase =
         Room.databaseBuilder(context, MovieDatabase::class.java, MovieDatabase.DATABASE_NAME).build()
 
     @Provides
     @Singleton
-    fun provideDao(database: MovieDatabase) = database.movieDao()
+    fun provideDao(database: MovieDatabase): MovieDao = database.movieDao()
 }
