@@ -1,6 +1,5 @@
 package com.ss.moviehub.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.ss.moviehub.models.Result
 import kotlinx.coroutines.flow.Flow
