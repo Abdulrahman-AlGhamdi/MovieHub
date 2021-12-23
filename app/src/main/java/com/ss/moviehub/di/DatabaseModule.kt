@@ -1,9 +1,9 @@
-package com.ss.moviehub.hilt
+package com.ss.moviehub.di
 
 import android.content.Context
 import androidx.room.Room
-import com.ss.moviehub.database.MovieDao
-import com.ss.moviehub.database.MovieDatabase
+import com.ss.moviehub.data.database.MovieDao
+import com.ss.moviehub.data.database.MovieDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

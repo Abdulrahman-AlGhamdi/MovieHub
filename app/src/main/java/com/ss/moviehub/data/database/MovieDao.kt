@@ -1,4 +1,4 @@
-package com.ss.moviehub.database
+package com.ss.moviehub.data.database
 
 import androidx.room.*
 import com.ss.moviehub.models.Result

@@ -1,4 +1,4 @@
-package com.ss.universitiesdirectory.utils
+package com.ss.moviehub.utils
 
 import android.content.Context
 import android.content.Intent

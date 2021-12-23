@@ -1,4 +1,4 @@
-package com.ss.moviehub.api
+package com.ss.moviehub.data.api
 
 import com.ss.moviehub.models.MovieResponse
 import com.ss.moviehub.utils.Constants.API_KEY

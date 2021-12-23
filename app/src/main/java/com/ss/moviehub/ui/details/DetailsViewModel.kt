@@ -3,23 +3,23 @@ package com.ss.moviehub.ui.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ss.moviehub.models.Result
-import com.ss.moviehub.repository.DatabaseRepository
+import com.ss.moviehub.repository.library.LibraryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val databaseRepository: DatabaseRepository,
+    private val libraryRepository: LibraryRepository,
 ) : ViewModel() {
 
-    fun getLibraryMovies() = databaseRepository.getLibraryMovies()
+    fun getLibraryMovies() = libraryRepository.getLibraryMovies()
 
     fun addMovieToLibrary(result: Result) {
-        viewModelScope.launch { databaseRepository.addMovieToLibrary(result) }
+        viewModelScope.launch { libraryRepository.addMovieToLibrary(result) }
     }
 
     fun deleteMovieFromLibrary(result: Result) {
-        viewModelScope.launch { databaseRepository.deleteMovieLibrary(result) }
+        viewModelScope.launch { libraryRepository.deleteMovieLibrary(result) }
     }
 }

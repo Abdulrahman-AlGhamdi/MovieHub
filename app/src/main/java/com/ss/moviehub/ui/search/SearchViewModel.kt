@@ -1,15 +1,28 @@
 package com.ss.moviehub.ui.search
 
 import androidx.lifecycle.ViewModel
-import com.ss.moviehub.repository.MoviesRepository
+import androidx.lifecycle.viewModelScope
+import com.ss.moviehub.repository.search.SearchRepository
+import com.ss.moviehub.repository.search.SearchRepository.ResponseStatus
+import com.ss.moviehub.repository.search.SearchRepository.ResponseStatus.Idle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val moviesRepository: MoviesRepository
+    private val searchRepository: SearchRepository
 ) : ViewModel() {
 
-    suspend fun getSearchMovies(search: String, pageNumber: Int) =
-        moviesRepository.getSearchedMovies(search, pageNumber)
+    private val _searchedMovies = MutableStateFlow<ResponseStatus>(Idle)
+    val searchedMovies = _searchedMovies.asStateFlow()
+
+    fun getSearchMovies(search: String, pageNumber: Int = 1) = viewModelScope.launch {
+        searchRepository.getSearchedMovies(search, pageNumber).collect {
+            _searchedMovies.value = it
+        }
+    }
 }

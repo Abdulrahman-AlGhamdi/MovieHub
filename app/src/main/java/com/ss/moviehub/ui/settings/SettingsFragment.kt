@@ -7,7 +7,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.ss.moviehub.BuildConfig
 import com.ss.moviehub.R
-import com.ss.universitiesdirectory.utils.LanguageHelper
+import com.ss.moviehub.utils.LanguageHelper
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -19,9 +19,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun onPreferenceClick() {
-        val darkMode = findPreference(getString(R.string.preference_dark_mode_key)) as? Preference
+        val darkMode  = findPreference(getString(R.string.preference_dark_mode_key)) as? Preference
         val contactMe = findPreference(getString(R.string.preference_contact_me_key)) as? Preference
-        val language = findPreference(getString(R.string.preference_language_key)) as? Preference
+        val language  = findPreference(getString(R.string.preference_language_key)) as? Preference
 
         darkMode?.setOnPreferenceChangeListener { _, newValue ->
             if (newValue as Boolean) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

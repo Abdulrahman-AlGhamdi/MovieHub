@@ -1,6 +1,6 @@
-package com.ss.moviehub.hilt
+package com.ss.moviehub.di
 
-import com.ss.moviehub.api.MovieApiService
+import com.ss.moviehub.data.api.MovieApiService
 import com.ss.moviehub.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
