@@ -15,7 +15,7 @@
     <tr><td align="center">2</td><td>Save the movie you like to the library to revisited again at any time.</td></tr>
     <tr><td align="center">3</td><td>Search for any title and the result will show a list of movies for that title.</td></tr>
     <tr><td align="center">4</td><td>Details page for every movie that will show you [name, description, rate, poster and etc] of the movie.</td></tr>
-    <tr><td align="center">5</td><td>Settings page to change to dark mode or switch to arabic langauge or send me any thing via the email.</td></tr>
+    <tr><td align="center">5</td><td>Settings page to change to dark mode or switch to arabic language or send me any thing via the email.</td></tr>
 </table>
 
 <div align="center">
