@@ -12,28 +12,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.FragmentLibraryBinding
+import com.ss.moviehub.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class LibraryFragment : Fragment() {
+class LibraryFragment : Fragment(R.layout.fragment_library) {
 
-    private var _binding: FragmentLibraryBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentLibraryBinding::bind)
     private val viewModel: LibraryViewModel by viewModels()
     private val adapter = LibraryAdapter()
     private lateinit var libraryJob: Job
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentLibraryBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         showLibraryMovies()
         deleteFromLibrary()
-
-        return binding.root
     }
 
     private fun showLibraryMovies() {
@@ -115,6 +111,5 @@ class LibraryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         libraryJob.cancel()
-        _binding = null
     }
 }

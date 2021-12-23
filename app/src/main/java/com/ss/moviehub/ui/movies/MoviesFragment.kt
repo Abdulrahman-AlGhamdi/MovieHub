@@ -16,28 +16,24 @@ import com.ss.moviehub.databinding.FragmentMoviesBinding
 import com.ss.moviehub.repository.MoviesRepository
 import com.ss.moviehub.ui.movies.MoviesFragment.ViewState.NO_INTERNET
 import com.ss.moviehub.ui.movies.MoviesFragment.ViewState.WITH_INTERNET
+import com.ss.moviehub.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class MoviesFragment : Fragment() {
+class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
-    private var _binding: FragmentMoviesBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentMoviesBinding::bind)
     private val viewModel: MoviesViewModel by viewModels()
     private lateinit var popularJob: Job
     private lateinit var topRatedJob: Job
     private lateinit var upcomingJop: Job
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMoviesBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         init()
-
-        return binding.root
     }
 
     private fun init() {
@@ -138,6 +134,5 @@ class MoviesFragment : Fragment() {
         if (::popularJob.isInitialized) popularJob.cancel()
         if (::topRatedJob.isInitialized) topRatedJob.cancel()
         if (::upcomingJop.isInitialized) upcomingJop.cancel()
-        _binding = null
     }
 }

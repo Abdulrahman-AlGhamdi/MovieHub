@@ -12,28 +12,24 @@ import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.FragmentDetailsBinding
+import com.ss.moviehub.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(R.layout.fragment_details) {
 
-    private var _binding: FragmentDetailsBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentDetailsBinding::bind)
     private val viewModel: DetailsViewModel by viewModels()
     private val arguments by navArgs<DetailsFragmentArgs>()
     private lateinit var detailsJob: Job
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         bindMovieDetails()
         addOrRemoveMovie()
-
-        return binding.root
     }
 
     private fun bindMovieDetails() {
@@ -92,6 +88,5 @@ class DetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         detailsJob.cancel()
-        _binding = null
     }
 }
