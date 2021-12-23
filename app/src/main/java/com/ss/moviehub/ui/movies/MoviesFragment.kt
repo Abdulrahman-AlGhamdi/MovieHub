@@ -13,12 +13,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.FragmentMoviesBinding
 import com.ss.moviehub.repository.MoviesRepository
 import com.ss.moviehub.ui.movies.MoviesFragment.ViewState.NO_INTERNET
 import com.ss.moviehub.ui.movies.MoviesFragment.ViewState.WITH_INTERNET
+import com.ss.moviehub.utils.navigateTo
+import com.ss.moviehub.utils.showSnackBar
 import com.ss.moviehub.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -52,10 +53,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         popularJob = lifecycleScope.launchWhenCreated {
             viewModel.getPopularMovie().collect { status ->
                 when (status) {
-                    is MoviesRepository.ResponseStatus.Failed ->
-                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
-                            this.setAnchorView(R.id.navigation_bar)
-                        }.show()
+                    is MoviesRepository.ResponseStatus.Failed -> requireView().showSnackBar(status.message)
                     is MoviesRepository.ResponseStatus.Successful -> {
                         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                         binding.popularList.layoutManager = layoutManager
@@ -68,10 +66,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         topRatedJob = lifecycleScope.launchWhenCreated {
             viewModel.getTopRatedMovie().collect { status ->
                 when (status) {
-                    is MoviesRepository.ResponseStatus.Failed ->
-                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
-                            this.setAnchorView(R.id.navigation_bar)
-                        }.show()
+                    is MoviesRepository.ResponseStatus.Failed -> requireView().showSnackBar(status.message)
                     is MoviesRepository.ResponseStatus.Successful -> {
                         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                         binding.topRatedList.layoutManager = layoutManager
@@ -84,10 +79,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         upcomingJop = lifecycleScope.launchWhenCreated {
             viewModel.getUpcomingMovie().collect { status ->
                 when (status) {
-                    is MoviesRepository.ResponseStatus.Failed ->
-                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
-                            this.setAnchorView(R.id.navigation_bar)
-                        }.show()
+                    is MoviesRepository.ResponseStatus.Failed -> requireView().showSnackBar(status.message)
                     is MoviesRepository.ResponseStatus.Successful -> {
                         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                         binding.upcomingList.layoutManager = layoutManager
@@ -127,7 +119,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         if (item.itemId == R.id.menu_settings){
             val directions = MoviesFragmentDirections
             val action = directions.actionMoviesFragmentToSettingsFragment()
-            findNavController().navigate(action)
+            findNavController().navigateTo(action, R.id.moviesFragment)
         }
         return super.onOptionsItemSelected(item)
     }

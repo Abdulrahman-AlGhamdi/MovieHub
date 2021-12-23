@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.ss.moviehub.R
 import com.ss.moviehub.databinding.RowLibraryItemBinding
 import com.ss.moviehub.models.Result
+import com.ss.moviehub.utils.navigateTo
 
 class LibraryAdapter : RecyclerView.Adapter<LibraryAdapter.ViewHolder>() {
 
@@ -35,7 +37,8 @@ class LibraryAdapter : RecyclerView.Adapter<LibraryAdapter.ViewHolder>() {
             binding.root.setOnClickListener {
                 val directions = LibraryFragmentDirections
                 val action = directions.actionLibraryFragmentToDetailsFragment(movie)
-                itemView.findNavController().navigate(action)
+                itemView.findNavController().navigateTo(action, R.id.libraryFragment)
+
             }
         }
     }

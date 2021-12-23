@@ -12,9 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.FragmentLibraryBinding
+import com.ss.moviehub.utils.navigateTo
+import com.ss.moviehub.utils.showSnackBar
 import com.ss.moviehub.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -46,7 +47,7 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
                         binding.emptyButton.setOnClickListener {
                             val directions = LibraryFragmentDirections
                             val action = directions.actionLibraryFragmentToMoviesFragment()
-                            findNavController().navigate(action)
+                            findNavController().navigateTo(action, R.id.libraryFragment)
                         }
                     }
                     is LibraryViewModel.LibraryMoviesState.LibraryList -> {
@@ -77,13 +78,13 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
                 val result = adapter.differ.currentList[viewHolder.adapterPosition]
                 viewModel.deleteMovieFromLibrary(result)
                 result.added = false
-                Snackbar.make(requireView(), getString(R.string.successfully_deleted), Snackbar.LENGTH_SHORT).apply {
-                    this.setAction(getString(R.string.undo)) {
-                        viewModel.addMovieToLibrary(result)
-                        result.added = true
-                    }
-                    this.setAnchorView(R.id.navigation_bar)
-                }.show()
+                requireView().showSnackBar(
+                    message = getString(R.string.successfully_deleted),
+                    actionMessage = getString(R.string.undo)
+                ) {
+                    viewModel.addMovieToLibrary(result)
+                    result.added = true
+                }
             }
         }
 
