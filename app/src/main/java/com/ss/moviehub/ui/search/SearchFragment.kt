@@ -11,12 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.FragmentSearchBinding
 import com.ss.moviehub.repository.MoviesRepository
 import com.ss.moviehub.ui.search.SearchFragment.ViewState.NoInternet
 import com.ss.moviehub.ui.search.SearchFragment.ViewState.WithInternet
+import com.ss.moviehub.utils.showSnackBar
 import com.ss.moviehub.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -75,10 +75,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             viewModel.getSearchMovies(query, 1).collect { status ->
                 when (status) {
                     is MoviesRepository.ResponseStatus.Failed ->
-                        if (status.message.isNotEmpty())
-                        Snackbar.make(requireView(), status.message, Snackbar.LENGTH_SHORT).apply {
-                            this.setAnchorView(R.id.navigation_bar)
-                        }.show()
+                        if (status.message.isNotEmpty()) requireView().showSnackBar(status.message)
                     is MoviesRepository.ResponseStatus.Successful -> {
                         binding.searchList.layoutManager = GridLayoutManager(requireContext(), 2)
                         binding.searchList.adapter = SearchAdapter(status.movieList)
