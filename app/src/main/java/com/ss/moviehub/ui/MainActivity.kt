@@ -11,7 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.ActivityMainBinding
 import com.ss.moviehub.utils.viewBinding
-import com.ss.universitiesdirectory.utils.LanguageHelper
+import com.ss.moviehub.utils.LanguageHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

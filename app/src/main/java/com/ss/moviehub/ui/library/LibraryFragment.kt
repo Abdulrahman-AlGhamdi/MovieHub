@@ -18,8 +18,10 @@ import com.ss.moviehub.utils.navigateTo
 import com.ss.moviehub.utils.showSnackBar
 import com.ss.moviehub.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LibraryFragment : Fragment(R.layout.fragment_library) {
@@ -37,27 +39,25 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
     }
 
     private fun showLibraryMovies() {
-        libraryJob = lifecycleScope.launchWhenCreated {
+        libraryJob = lifecycleScope.launch(Dispatchers.Main) {
             viewModel.getLibraryMovies().collect {
-                when (it) {
-                    LibraryViewModel.LibraryMoviesState.EmptyList -> {
-                        binding.libraryHeader.visibility = View.GONE
-                        binding.libraryList.visibility = View.GONE
-                        binding.empty.visibility = View.VISIBLE
-                        binding.emptyButton.setOnClickListener {
-                            val directions = LibraryFragmentDirections
-                            val action = directions.actionLibraryFragmentToMoviesFragment()
-                            findNavController().navigateTo(action, R.id.libraryFragment)
-                        }
+                if (it.isEmpty()) {
+                    binding.libraryHeader.visibility = View.GONE
+                    binding.libraryList.visibility   = View.GONE
+                    binding.empty.visibility         = View.VISIBLE
+
+                    binding.emptyButton.setOnClickListener {
+                        val directions = LibraryFragmentDirections
+                        val action = directions.actionLibraryFragmentToMoviesFragment()
+                        findNavController().navigateTo(action, R.id.libraryFragment)
                     }
-                    is LibraryViewModel.LibraryMoviesState.LibraryList -> {
-                        setHasOptionsMenu(true)
-                        binding.empty.visibility = View.GONE
-                        binding.libraryHeader.visibility = View.VISIBLE
-                        binding.libraryList.visibility = View.VISIBLE
-                        adapter.differ.submitList(it.libraryList)
-                        binding.libraryList.adapter = adapter
-                    }
+                } else {
+                    setHasOptionsMenu(true)
+                    adapter.differ.submitList(it)
+                    binding.empty.visibility         = View.GONE
+                    binding.libraryHeader.visibility = View.VISIBLE
+                    binding.libraryList.visibility   = View.VISIBLE
+                    binding.libraryList.adapter      = adapter
                 }
             }
         }
@@ -68,24 +68,21 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
-            override fun onMove(
-                recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
-            ): Boolean {
-                return true
-            }
-
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val result = adapter.differ.currentList[viewHolder.adapterPosition]
                 viewModel.deleteMovieFromLibrary(result)
-                result.added = false
+
                 requireView().showSnackBar(
                     message = getString(R.string.successfully_deleted),
                     actionMessage = getString(R.string.undo)
-                ) {
-                    viewModel.addMovieToLibrary(result)
-                    result.added = true
-                }
+                ) { viewModel.addMovieToLibrary(result) }
             }
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = true
         }
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.libraryList)
@@ -99,21 +96,17 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.delete_all_menu)
             AlertDialog.Builder(requireActivity()).apply {
+                this.setTitle(getString(R.string.delete_all_movies))
                 this.setCancelable(false)
                 this.setNegativeButton(getString(R.string.cancel), null)
-                this.setPositiveButton(getString(R.string.ok)) { _, _ ->
-                    viewModel.deleteAllMovies()
-                }
-                this.create().apply {
-                    this.setTitle(getString(R.string.delete_all_movies))
-                    this.show()
-                }
-            }
+                this.setPositiveButton(getString(R.string.ok)) { _, _ -> viewModel.deleteAllMovies() }
+                this.create()
+            }.show()
         return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {
+        if (::libraryJob.isInitialized) libraryJob.cancel()
         super.onDestroyView()
-        libraryJob.cancel()
     }
 }

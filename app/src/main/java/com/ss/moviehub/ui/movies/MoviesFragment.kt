@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.FragmentMoviesBinding
-import com.ss.moviehub.repository.MoviesRepository
+import com.ss.moviehub.repository.movies.MoviesRepository
 import com.ss.moviehub.ui.movies.MoviesFragment.ViewState.NO_INTERNET
 import com.ss.moviehub.ui.movies.MoviesFragment.ViewState.WITH_INTERNET
 import com.ss.moviehub.utils.navigateTo
@@ -42,6 +42,10 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private fun init() {
         setHasOptionsMenu(true)
+        viewModel.getPopularMovie()
+        viewModel.getTopRatedMovie()
+        viewModel.getUpcomingMovie()
+
         val manager = requireActivity().getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val capabilities = manager.getNetworkCapabilities(manager.activeNetwork)
@@ -51,7 +55,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private fun getMovies() {
         popularJob = lifecycleScope.launchWhenCreated {
-            viewModel.getPopularMovie().collect { status ->
+            viewModel.popularMovies.collect { status ->
                 when (status) {
                     is MoviesRepository.ResponseStatus.Failed -> requireView().showSnackBar(status.message)
                     is MoviesRepository.ResponseStatus.Successful -> {
@@ -64,7 +68,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
 
         topRatedJob = lifecycleScope.launchWhenCreated {
-            viewModel.getTopRatedMovie().collect { status ->
+            viewModel.topRatedMovies.collect { status ->
                 when (status) {
                     is MoviesRepository.ResponseStatus.Failed -> requireView().showSnackBar(status.message)
                     is MoviesRepository.ResponseStatus.Successful -> {
@@ -77,7 +81,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
 
         upcomingJop = lifecycleScope.launchWhenCreated {
-            viewModel.getUpcomingMovie().collect { status ->
+            viewModel.upcomingMovies.collect { status ->
                 when (status) {
                     is MoviesRepository.ResponseStatus.Failed -> requireView().showSnackBar(status.message)
                     is MoviesRepository.ResponseStatus.Successful -> {

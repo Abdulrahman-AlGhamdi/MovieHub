@@ -31,14 +31,16 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     }
 
     private fun bindMovieDetails() {
-        binding.title.text = arguments.movie.title
-        binding.overview.text = arguments.movie.overview
+        binding.title.text       = arguments.movie.title
+        binding.overview.text    = arguments.movie.overview
         binding.releaseDate.text = arguments.movie.releaseDate
-        binding.backdrop.load("https://image.tmdb.org/t/p/w342${arguments.movie.backdropPath}")
+
         binding.poster.load("https://image.tmdb.org/t/p/w342${arguments.movie.posterPath}")
-        arguments.movie.voteAverage?.let {
+        binding.backdrop.load("https://image.tmdb.org/t/p/w342${arguments.movie.backdropPath}")
+
+        arguments.movie.voteAverage.let {
+            binding.ratingBar.rating  = it.toFloat()
             binding.ratingNumber.text = it.toString()
-            binding.ratingBar.rating = it.toFloat()
         }
     }
 
@@ -55,7 +57,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     private fun addToLibrary() {
         binding.deleteFromLibrary.visibility = View.INVISIBLE
-        binding.addToLibrary.visibility = View.VISIBLE
+        binding.addToLibrary.visibility      = View.VISIBLE
+
         binding.addToLibrary.setOnClickListener {
             arguments.movie.added = true
             viewModel.addMovieToLibrary(arguments.movie)
@@ -65,24 +68,22 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     }
 
     private fun deleteFromLibrary() {
-        binding.addToLibrary.visibility = View.INVISIBLE
+        binding.addToLibrary.visibility      = View.INVISIBLE
         binding.deleteFromLibrary.visibility = View.VISIBLE
+
         binding.deleteFromLibrary.setOnClickListener {
-            arguments.movie.added = false
             viewModel.deleteMovieFromLibrary(arguments.movie)
+
             requireView().showSnackBar(
                 message = getString(R.string.successfully_deleted),
                 actionMessage = getString(R.string.undo)
-            ) {
-                viewModel.addMovieToLibrary(arguments.movie)
-                arguments.movie.added = true
-            }
+            ) { viewModel.addMovieToLibrary(arguments.movie) }
             addOrRemoveMovie()
         }
     }
 
     override fun onDestroyView() {
+        if (::detailsJob.isInitialized) detailsJob.cancel()
         super.onDestroyView()
-        detailsJob.cancel()
     }
 }
