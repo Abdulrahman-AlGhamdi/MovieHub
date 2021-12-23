@@ -4,9 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,27 +17,23 @@ import com.ss.moviehub.databinding.FragmentSearchBinding
 import com.ss.moviehub.repository.MoviesRepository
 import com.ss.moviehub.ui.search.SearchFragment.ViewState.NoInternet
 import com.ss.moviehub.ui.search.SearchFragment.ViewState.WithInternet
+import com.ss.moviehub.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(R.layout.fragment_search) {
 
-    private var _binding: FragmentSearchBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentSearchBinding::bind)
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var searchJob: Job
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         init()
         searchMovie()
-
-        return binding.root
     }
 
     private fun init() {
@@ -121,6 +115,5 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         if (::searchJob.isInitialized) searchJob.cancel()
-        _binding = null
     }
 }
