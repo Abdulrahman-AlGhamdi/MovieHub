@@ -1,4 +1,4 @@
-package com.ss.moviehub.models
+package com.ss.moviehub.data.models
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -16,7 +16,6 @@ data class Result(
     var popularity : Double = 0.0,
     var title      : String = "",
     var video      : Boolean = false,
-    var added      : Boolean = false,
     @SerializedName(value ="poster_path") var posterPath             : String = "",
     @SerializedName(value ="release_date") var releaseDate           : String = "",
     @SerializedName(value ="original_title") var originalTitle       : String = "",

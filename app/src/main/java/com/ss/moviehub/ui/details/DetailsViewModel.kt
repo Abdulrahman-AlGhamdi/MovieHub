@@ -2,24 +2,38 @@ package com.ss.moviehub.ui.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ss.moviehub.models.Result
-import com.ss.moviehub.repository.library.LibraryRepository
+import com.ss.moviehub.data.models.Result
+import com.ss.moviehub.repository.details.DetailsRepository
+import com.ss.moviehub.repository.details.DetailsRepository.*
+import com.ss.moviehub.repository.details.DetailsRepository.DetailsStatus.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val libraryRepository: LibraryRepository,
+    private val detailsRepository: DetailsRepository,
 ) : ViewModel() {
 
-    fun getLibraryMovies() = libraryRepository.getLibraryMovies()
+    private var _checkIsOnLibrary = MutableStateFlow<DetailsStatus>(Idle)
+    val checkIsOnLibrary = _checkIsOnLibrary.asStateFlow()
 
-    fun addMovieToLibrary(result: Result) {
-        viewModelScope.launch { libraryRepository.addMovieToLibrary(result) }
+    fun checkIsOnLibrary(movieId: Int) = viewModelScope.launch {
+        detailsRepository.checkIsOnLibrary(movieId).collect {
+            _checkIsOnLibrary.value = it
+        }
     }
 
-    fun deleteMovieFromLibrary(result: Result) {
-        viewModelScope.launch { libraryRepository.deleteMovieLibrary(result) }
+    fun addMovie(result: Result) = viewModelScope.launch {
+        detailsRepository.addMovie(result)
+        checkIsOnLibrary(result.id)
+    }
+
+    fun removeMovie(result: Result) = viewModelScope.launch {
+        detailsRepository.removeMovie(result)
+        checkIsOnLibrary(result.id)
     }
 }

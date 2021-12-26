@@ -16,7 +16,7 @@ class App : Application() {
 
     private fun defaultSettings() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val darkMode = preferences.getBoolean(getString(R.string.preference_dark_mode_key), false)
+        val darkMode    = preferences.getBoolean(getString(R.string.preference_dark_mode_key), false)
 
         if (darkMode) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

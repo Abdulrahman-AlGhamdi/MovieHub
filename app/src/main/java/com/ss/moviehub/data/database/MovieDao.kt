@@ -1,7 +1,7 @@
 package com.ss.moviehub.data.database
 
 import androidx.room.*
-import com.ss.moviehub.models.Result
+import com.ss.moviehub.data.models.Result
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,7 +14,7 @@ interface MovieDao {
     suspend fun deleteMovie(result: Result)
 
     @Query("SELECT * FROM result_table ORDER BY title ASC")
-    fun getLibraryMovies(): Flow<List<Result>>
+    fun getAllMovies(): Flow<List<Result>>
 
     @Query("DELETE FROM result_table")
     suspend fun deleteAllMovies()

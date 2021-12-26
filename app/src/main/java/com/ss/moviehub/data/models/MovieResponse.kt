@@ -1,4 +1,4 @@
-package com.ss.moviehub.models
+package com.ss.moviehub.data.models
 
 data class MovieResponse(
     val page          : Int,

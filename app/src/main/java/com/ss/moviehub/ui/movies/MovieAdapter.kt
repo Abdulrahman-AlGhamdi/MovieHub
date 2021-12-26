@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.RowMovieItemBinding
-import com.ss.moviehub.models.Result
+import com.ss.moviehub.data.models.Result
 import com.ss.moviehub.utils.navigateTo
 
 class MovieAdapter(
@@ -23,9 +23,8 @@ class MovieAdapter(
 
             binding.root.setOnClickListener {
                 val directions = MoviesFragmentDirections
-                val action = directions.actionMoviesFragmentToDetailsFragment(movie)
+                val action     = directions.actionMoviesFragmentToDetailsFragment(movie)
                 itemView.findNavController().navigateTo(action, R.id.moviesFragment)
-
             }
         }
     }

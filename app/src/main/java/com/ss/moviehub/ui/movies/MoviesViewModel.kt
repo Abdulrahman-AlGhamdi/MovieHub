@@ -3,11 +3,10 @@ package com.ss.moviehub.ui.movies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ss.moviehub.repository.movies.MoviesRepository
-import com.ss.moviehub.repository.movies.MoviesRepository.*
-import com.ss.moviehub.repository.movies.MoviesRepository.ResponseStatus.*
+import com.ss.moviehub.repository.movies.MoviesRepository.ResponseStatus
+import com.ss.moviehub.repository.movies.MoviesRepository.ResponseStatus.Idle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -18,6 +17,12 @@ class MoviesViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
+    init {
+        getPopularMovie()
+        getTopRatedMovie()
+        getUpcomingMovie()
+    }
+
     private val _popularMovies = MutableStateFlow<ResponseStatus>(Idle)
     val popularMovies = _popularMovies.asStateFlow()
     private val _topRatedMovies = MutableStateFlow<ResponseStatus>(Idle)
@@ -25,19 +30,19 @@ class MoviesViewModel @Inject constructor(
     private val _upcomingMovies = MutableStateFlow<ResponseStatus>(Idle)
     val upcomingMovies = _upcomingMovies.asStateFlow()
 
-    fun getPopularMovie(pageNumber: Int = 1) = viewModelScope.launch {
+    private fun getPopularMovie(pageNumber: Int = 1) = viewModelScope.launch {
         moviesRepository.getPopularMovie(pageNumber).collect {
             _popularMovies.value = it
         }
     }
 
-    fun getTopRatedMovie(pageNumber: Int = 1) = viewModelScope.launch {
+    private fun getTopRatedMovie(pageNumber: Int = 1) = viewModelScope.launch {
         moviesRepository.getTopRatedMovie(pageNumber).collect {
             _topRatedMovies.value = it
         }
     }
 
-    fun getUpcomingMovie(pageNumber: Int = 1) = viewModelScope.launch {
+    private fun getUpcomingMovie(pageNumber: Int = 1) = viewModelScope.launch {
         moviesRepository.getUpcomingMovie(pageNumber).collect {
             _upcomingMovies.value = it
         }

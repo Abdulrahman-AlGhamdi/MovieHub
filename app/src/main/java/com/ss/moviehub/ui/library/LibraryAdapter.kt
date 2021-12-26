@@ -8,20 +8,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.ss.moviehub.R
+import com.ss.moviehub.data.models.Result
 import com.ss.moviehub.databinding.RowLibraryItemBinding
-import com.ss.moviehub.models.Result
 import com.ss.moviehub.utils.navigateTo
 
 class LibraryAdapter : RecyclerView.Adapter<LibraryAdapter.ViewHolder>() {
 
     val differ = AsyncListDiffer(this, object : DiffUtil.ItemCallback<Result>() {
-        override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
-            return oldItem == newItem
-        }
+        override fun areItemsTheSame(oldItem: Result, newItem: Result) = oldItem.id == newItem.id
+        override fun areContentsTheSame(oldItem: Result, newItem: Result) = oldItem == newItem
     })
 
     inner class ViewHolder(
@@ -29,16 +24,17 @@ class LibraryAdapter : RecyclerView.Adapter<LibraryAdapter.ViewHolder>() {
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movie: Result) {
-            binding.title.text = movie.title
+            binding.title.text       = movie.title
             binding.releaseDate.text = movie.releaseDate
-            binding.language.text = "Votes: ${movie.voteCount}"
-            movie.voteAverage?.let { binding.ratingBar.rating = it.toFloat() / 2 }
+            binding.language.text    = "Votes: ${movie.voteCount}"
+
+            movie.voteAverage.let { binding.ratingBar.rating = it.toFloat() / 2 }
             binding.poster.load("https://image.tmdb.org/t/p/w342${movie.posterPath}")
+
             binding.root.setOnClickListener {
                 val directions = LibraryFragmentDirections
-                val action = directions.actionLibraryFragmentToDetailsFragment(movie)
+                val action     = directions.actionLibraryFragmentToDetailsFragment(movie)
                 itemView.findNavController().navigateTo(action, R.id.libraryFragment)
-
             }
         }
     }

@@ -48,7 +48,7 @@
     <string name="preference_language_summary_off">إنجليزي</string>
     <string name="preference_contact_me_title">تواصل معي</string>
     <string name="preference_contact_me_summary">أي اقتراحات او مشاكل من فضلك لا تتردد في التواصل معي</string>
-    <string name="preference_version_summary">%1$s (%2$d)</string>
+    <string name="preference_version_summary">%s (%d)</string>
     <string name="preference_version_title">اصدار التطبيق</string>
 
     <!-- Error Strings -->
