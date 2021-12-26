@@ -1,6 +1,6 @@
 package com.ss.moviehub.data.api
 
-import com.ss.moviehub.models.MovieResponse
+import com.ss.moviehub.data.models.MovieResponse
 import com.ss.moviehub.utils.Constants.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET

@@ -25,4 +25,8 @@ class SearchViewModel @Inject constructor(
             _searchedMovies.value = it
         }
     }
+
+    fun saveLastSearch(search: String) = searchRepository.saveLastSearch(search)
+
+    fun getLastSearch(): String = searchRepository.getLastSearch()
 }

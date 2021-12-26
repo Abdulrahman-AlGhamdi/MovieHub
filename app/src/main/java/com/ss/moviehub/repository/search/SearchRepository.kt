@@ -1,9 +1,10 @@
 package com.ss.moviehub.repository.search
 
 import android.content.Context
+import androidx.preference.PreferenceManager
 import com.ss.moviehub.R
 import com.ss.moviehub.data.api.MovieApiService
-import com.ss.moviehub.models.Result
+import com.ss.moviehub.data.models.Result
 import com.ss.moviehub.repository.search.SearchRepository.ResponseStatus.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -24,6 +25,16 @@ class SearchRepository @Inject constructor(
             else emit(Failed(context.getString(R.string.error_no_result)))
         }
     }.flowOn(Dispatchers.IO)
+
+    fun saveLastSearch(search: String) = PreferenceManager
+        .getDefaultSharedPreferences(context).edit()
+        .putString("Searched Movie", search)
+        .apply()
+
+    fun getLastSearch(): String {
+        val preference = PreferenceManager.getDefaultSharedPreferences(context)
+        return preference.getString("Searched Movie", "") ?: ""
+    }
 
     sealed class ResponseStatus {
         object Idle                                        : ResponseStatus()

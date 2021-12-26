@@ -2,14 +2,13 @@ package com.ss.moviehub.ui.search
 
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.View
-import android.widget.SearchView
+import android.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.GridLayoutManager
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.FragmentSearchBinding
 import com.ss.moviehub.repository.search.SearchRepository.ResponseStatus.Failed
@@ -27,7 +26,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val binding by viewBinding(FragmentSearchBinding::bind)
     private val viewModel: SearchViewModel by viewModels()
-    private lateinit var manager: ConnectivityManager
+    private var capabilities: NetworkCapabilities? = null
     private lateinit var searchJob: Job
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,12 +38,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun init() {
-        val preference = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val lastSearch = preference.getString("Searched Movie", "") ?: ""
+        val lastSearch = viewModel.getLastSearch()
         binding.searchResultFor.text = getString(R.string.search_result_for, lastSearch)
 
-        manager = requireActivity().getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val capabilities = manager.getNetworkCapabilities(manager.activeNetwork)
+        val manager = requireActivity().getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        capabilities = manager.getNetworkCapabilities(manager.activeNetwork)
 
         if (capabilities == null) checkNetwork(isConnected = false)
         else checkNetwork(isConnected = true, query = lastSearch)
@@ -55,7 +53,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.search.visibility          = View.VISIBLE
         binding.searchList.visibility      = View.VISIBLE
         binding.searchResultFor.visibility = View.VISIBLE
-        if (query.isNotEmpty()) searchJob = viewModel.getSearchMovies(query, 1) else Unit
+        if (query.isNotEmpty()) { viewModel.getSearchMovies(query); Unit } else Unit
     } else {
         binding.search.visibility          = View.GONE
         binding.searchList.visibility      = View.GONE
@@ -64,15 +62,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.noNetworkButton.setOnClickListener { init() }
     }
 
-    private fun searchMovie() = binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+    private fun searchMovie() = binding.search.setOnQueryTextListener(object : OnQueryTextListener {
         override fun onQueryTextSubmit(query: String): Boolean {
-            PreferenceManager.getDefaultSharedPreferences(context).edit().apply {
-                this.putString("Searched Movie", query)
-                this.apply()
-            }
-
-            binding.searchResultFor.text = getString(R.string.search_result_for, query ?: "")
-            val capabilities = manager.getNetworkCapabilities(manager.activeNetwork)
+            viewModel.saveLastSearch(query)
+            binding.searchResultFor.text = getString(R.string.search_result_for, query)
 
             if (capabilities == null) checkNetwork(isConnected = false)
             else checkNetwork(isConnected = true, query = query)
@@ -82,13 +75,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         override fun onQueryTextChange(newText: String): Boolean = false
     })
 
-    private fun getSearchedMovies() = lifecycleScope.launch(Dispatchers.Main) {
-        viewModel.searchedMovies.collect { status ->
-            when (status) {
-                is Failed -> requireView().showSnackBar(status.message)
-                is Successful -> {
-                    binding.searchList.layoutManager = GridLayoutManager(requireContext(), 2)
-                    binding.searchList.adapter = SearchAdapter(status.movieList)
+    private fun getSearchedMovies() {
+        searchJob = lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.searchedMovies.collect { status ->
+                when (status) {
+                    is Failed -> requireView().showSnackBar(status.message)
+                    is Successful -> binding.searchList.adapter = SearchAdapter(status.movieList)
                 }
             }
         }

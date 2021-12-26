@@ -3,6 +3,7 @@ package com.ss.moviehub.di
 import android.content.Context
 import com.ss.moviehub.data.api.MovieApiService
 import com.ss.moviehub.data.database.MovieDao
+import com.ss.moviehub.repository.details.DetailsRepository
 import com.ss.moviehub.repository.library.LibraryRepository
 import com.ss.moviehub.repository.movies.MoviesRepository
 import com.ss.moviehub.repository.search.SearchRepository
@@ -35,4 +36,10 @@ object AppModule {
     fun provideLibraryRepository(
         movieDao: MovieDao
     ): LibraryRepository = LibraryRepository(movieDao)
+
+    @Provides
+    @Singleton
+    fun provideDetailsRepository(
+        movieDao: MovieDao
+    ): DetailsRepository = DetailsRepository(movieDao)
 }

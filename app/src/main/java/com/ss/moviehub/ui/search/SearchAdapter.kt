@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.RowSearchItemBinding
-import com.ss.moviehub.models.Result
+import com.ss.moviehub.data.models.Result
 import com.ss.moviehub.utils.navigateTo
 
 class SearchAdapter(
@@ -23,9 +23,8 @@ class SearchAdapter(
 
             binding.root.setOnClickListener {
                 val directions = SearchFragmentDirections
-                val action = directions.actionSearchFragmentToDetailsFragment(movie)
+                val action     = directions.actionSearchFragmentToDetailsFragment(movie)
                 itemView.findNavController().navigateTo(action, R.id.searchFragment)
-
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.ss.moviehub.repository.movies
 
 import com.ss.moviehub.data.api.MovieApiService
-import com.ss.moviehub.models.Result
+import com.ss.moviehub.data.models.Result
 import com.ss.moviehub.repository.movies.MoviesRepository.ResponseStatus.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow

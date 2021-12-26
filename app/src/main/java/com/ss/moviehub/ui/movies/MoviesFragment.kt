@@ -2,7 +2,6 @@ package com.ss.moviehub.ui.movies
 
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.net.ConnectivityManager
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,12 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ss.moviehub.R
 import com.ss.moviehub.databinding.FragmentMoviesBinding
-import com.ss.moviehub.repository.movies.MoviesRepository
-import com.ss.moviehub.ui.movies.MoviesFragment.ViewState.NO_INTERNET
-import com.ss.moviehub.ui.movies.MoviesFragment.ViewState.WITH_INTERNET
+import com.ss.moviehub.repository.movies.MoviesRepository.ResponseStatus.Failed
+import com.ss.moviehub.repository.movies.MoviesRepository.ResponseStatus.Successful
 import com.ss.moviehub.utils.navigateTo
 import com.ss.moviehub.utils.showSnackBar
 import com.ss.moviehub.utils.viewBinding
@@ -42,27 +39,27 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private fun init() {
         setHasOptionsMenu(true)
-        viewModel.getPopularMovie()
-        viewModel.getTopRatedMovie()
-        viewModel.getUpcomingMovie()
-
         val manager = requireActivity().getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val capabilities = manager.getNetworkCapabilities(manager.activeNetwork)
-            if (capabilities != null) customView(WITH_INTERNET) else customView(NO_INTERNET)
-        } else if (manager.activeNetworkInfo != null)  customView(WITH_INTERNET) else customView(NO_INTERNET)
+        val capabilities = manager.getNetworkCapabilities(manager.activeNetwork)
+        if (capabilities != null) checkNetwork(isConnected = true) else checkNetwork(isConnected = false)
+    }
+
+    private fun checkNetwork(isConnected: Boolean): Unit = if (isConnected) {
+        binding.noNetwork.visibility = View.GONE
+        binding.scrollView.visibility = View.VISIBLE
+        getMovies()
+    } else {
+        binding.scrollView.visibility = View.GONE
+        binding.noNetwork.visibility = View.VISIBLE
+        binding.noNetworkButton.setOnClickListener { init() }
     }
 
     private fun getMovies() {
         popularJob = lifecycleScope.launchWhenCreated {
             viewModel.popularMovies.collect { status ->
                 when (status) {
-                    is MoviesRepository.ResponseStatus.Failed -> requireView().showSnackBar(status.message)
-                    is MoviesRepository.ResponseStatus.Successful -> {
-                        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                        binding.popularList.layoutManager = layoutManager
-                        binding.popularList.adapter = MovieAdapter(status.movieList)
-                    }
+                    is Failed -> requireView().showSnackBar(status.message)
+                    is Successful -> binding.popularList.adapter = MovieAdapter(status.movieList)
                 }
             }
         }
@@ -70,12 +67,8 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         topRatedJob = lifecycleScope.launchWhenCreated {
             viewModel.topRatedMovies.collect { status ->
                 when (status) {
-                    is MoviesRepository.ResponseStatus.Failed -> requireView().showSnackBar(status.message)
-                    is MoviesRepository.ResponseStatus.Successful -> {
-                        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                        binding.topRatedList.layoutManager = layoutManager
-                        binding.topRatedList.adapter = MovieAdapter(status.movieList)
-                    }
+                    is Failed -> requireView().showSnackBar(status.message)
+                    is Successful -> binding.topRatedList.adapter = MovieAdapter(status.movieList)
                 }
             }
         }
@@ -83,35 +76,11 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         upcomingJop = lifecycleScope.launchWhenCreated {
             viewModel.upcomingMovies.collect { status ->
                 when (status) {
-                    is MoviesRepository.ResponseStatus.Failed -> requireView().showSnackBar(status.message)
-                    is MoviesRepository.ResponseStatus.Successful -> {
-                        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                        binding.upcomingList.layoutManager = layoutManager
-                        binding.upcomingList.adapter = MovieAdapter(status.movieList)
-                    }
+                    is Failed -> requireView().showSnackBar(status.message)
+                    is Successful -> binding.upcomingList.adapter = MovieAdapter(status.movieList)
                 }
             }
         }
-    }
-
-    private fun customView(state: ViewState) {
-        when (state) {
-            NO_INTERNET -> {
-                binding.scrollView.visibility = View.GONE
-                binding.noNetwork.visibility = View.VISIBLE
-                binding.noNetworkButton.setOnClickListener { init() }
-            }
-            WITH_INTERNET -> {
-                binding.noNetwork.visibility = View.GONE
-                binding.scrollView.visibility = View.VISIBLE
-                getMovies()
-            }
-        }
-    }
-
-    enum class ViewState {
-        NO_INTERNET,
-        WITH_INTERNET
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -129,9 +98,9 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         if (::popularJob.isInitialized) popularJob.cancel()
         if (::topRatedJob.isInitialized) topRatedJob.cancel()
         if (::upcomingJop.isInitialized) upcomingJop.cancel()
+        super.onDestroyView()
     }
 }

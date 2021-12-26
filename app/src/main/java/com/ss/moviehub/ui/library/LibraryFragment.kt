@@ -70,12 +70,12 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
         ) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val result = adapter.differ.currentList[viewHolder.adapterPosition]
-                viewModel.deleteMovieFromLibrary(result)
+                viewModel.removeMovie(result)
 
                 requireView().showSnackBar(
                     message = getString(R.string.successfully_deleted),
                     actionMessage = getString(R.string.undo)
-                ) { viewModel.addMovieToLibrary(result) }
+                ) { viewModel.addMovie(result) }
             }
 
             override fun onMove(
