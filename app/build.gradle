@@ -6,6 +6,11 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
+def versionMajor = 2
+def versionMinor = 0
+def versionPatch = 0
+def versionBuild = 0
+
 android {
     compileSdk 33
     namespace 'com.ss.moviehub'
@@ -14,8 +19,8 @@ android {
         applicationId "com.ss.moviehub"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
