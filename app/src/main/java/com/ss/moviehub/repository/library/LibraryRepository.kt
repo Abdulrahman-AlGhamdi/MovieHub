@@ -1,18 +1,15 @@
 package com.ss.moviehub.repository.library
 
-import com.ss.moviehub.data.database.MovieDao
 import com.ss.moviehub.data.models.Result
-import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-class LibraryRepository @Inject constructor(
-    private val moviesDao: MovieDao
-) {
+interface LibraryRepository {
 
-    fun getLibraryMovies() = moviesDao.getAllMovies()
+    fun getLibraryMovies(): Flow<List<Result>>
 
-    suspend fun addMovie(result: Result) = moviesDao.addAndUpdateMovie(result)
+    suspend fun addMovie(result: Result)
 
-    suspend fun removeMovie(result: Result) = moviesDao.deleteMovie(result)
+    suspend fun removeMovie(result: Result)
 
-    suspend fun deleteAllMovies() = moviesDao.deleteAllMovies()
+    suspend fun deleteAllMovies()
 }
