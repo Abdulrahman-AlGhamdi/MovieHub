@@ -1,57 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MovieHub</string>
+    <string name="app_name">مركز الأفلام</string>
 
-    <!-- Fragment Names -->
-    <string name="movies">الأفلام</string>
-    <string name="search">بحث</string>
-    <string name="library">المكتبة</string>
-    <string name="details">تفاصيل</string>
-    <string name="settings">الإعدادات</string>
-
-    <!-- Movies Fragment Strings -->
-    <string name="popular">أكثر شعبية</string>
-    <string name="most_popular_movies">أكثر الأفلام شهرة</string>
-    <string name="top_rated">الأعلى تقييما</string>
-    <string name="highest_rated_movies">أعلى الأفلام تقييما في جميع الأوقات</string>
-    <string name="upcoming">القادم</string>
-    <string name="stay_updated">إبقى على اطلاع بأحدث الأفلام</string>
+    <!-- Movies Screen Strings -->
+    <string name="movies_screen">أفلام</string>
+    <string name="movies_popular_title">أكثر شعبية</string>
+    <string name="movies_popular_text">أكثر الأفلام شهرة</string>
+    <string name="movies_top_rated_title">الأعلى تقييما</string>
+    <string name="movies_top_rated_text">أعلى الأفلام تقييما في جميع الأوقات</string>
+    <string name="movies_upcoming_title">القادم</string>
+    <string name="movies_upcoming_text">إبقى على اطلاع بأحدث الأفلام</string>
     <string name="no_internet_connection">لا يوجد إتصال بالإنترنت</string>
     <string name="retry">أعد المحاولة…</string>
 
-    <!-- Search Fragment -->
-    <string name="search_result">آخر بحث عن:</string>
-    <string name="search_result_for">آخر بحث عن: %1$s</string>
+    <!-- Search Screen Strings -->
+    <string name="search_screen">بحث</string>
+    <string name="search_last">آخر بحث عن:</string>
 
-    <!-- Library Fragment -->
-    <string name="your_library_list">قائمة مكتبتك</string>
-    <string name="delete_all_movies">حذف جميع الأفلام</string>
-    <string name="empty_message">أضف الافلام لإظهارها هنا</string>
+    <!-- Library Screen Strings -->
+    <string name="library_screen">المكتبة</string>
+    <string name="library_delete_all_title">حذف جميع الأفلام</string>
+    <string name="library_delete_all_message">هل انت متأكد من انك تريد حذف جميع الأفلام في مكتبتك؟</string>
+    <string name="library_empty">لم يتم إضافة اي فلم ):</string>
+    <string name="library_add_movies">أضف لمكتبتك</string>
 
-    <!-- Details Fragment -->
-    <string name="add_to_library">إضافة إلى المكتبة</string>
+    <!-- Details Screen Strings -->
+    <string name="details_screen">تفاصيل</string>
+    <string name="details_add_movie">إضافة الفلم إلى المكتبة</string>
+    <string name="details_remove_movie">إزالة الفلم من المكتبة</string>
     <string name="successfully_added">تم إضافة الفلم بنجاح</string>
-    <string name="delete_from_library">حذف من المكتبة</string>
     <string name="successfully_deleted">تم حذف الفلم بنجاح</string>
+
+    <!-- Settings Screen Strings -->
+    <string name="settings_screen">الإعدادات</string>
+    <string name="settings_about">حول</string>
+    <string name="settings_contact_title">تواصل معي</string>
+    <string name="settings_version_title">اصدار التطبيق</string>
+
+    <!-- Common Strings -->
     <string name="cancel">إلغاء</string>
     <string name="undo">تراجع</string>
     <string name="ok">موافق</string>
-
-    <!-- Settings Preference Strings -->
-    <string name="preference_application_configuration">إعدادات التطبيق</string>
-    <string name="preference_about">حول</string>
-    <string name="preference_dark_mode_title">الوضع الليلي</string>
-    <string name="preference_dark_mode_summary_on">الوضع الليلي مفعل</string>
-    <string name="preference_dark_mode_summary_off">الوضع الليلي غير مفعل</string>
-    <string name="preference_language_title">اللغة</string>
-    <string name="preference_language_summary_on">عربي</string>
-    <string name="preference_language_summary_off">إنجليزي</string>
-    <string name="preference_contact_me_title">تواصل معي</string>
-    <string name="preference_contact_me_summary">أي اقتراحات او مشاكل من فضلك لا تتردد في التواصل معي</string>
-    <string name="preference_version_summary">%s (%d)</string>
-    <string name="preference_version_title">اصدار التطبيق</string>
+    <string name="no_internet">من فضلك قم بالتحقق من الإتصال بالانترنت</string>
 
     <!-- Error Strings -->
     <string name="error_no_result">لا توجد نتائج</string>
-
 </resources>

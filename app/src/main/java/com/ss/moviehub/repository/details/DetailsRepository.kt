@@ -1,32 +1,13 @@
 package com.ss.moviehub.repository.details
 
-import com.ss.moviehub.data.database.MovieDao
 import com.ss.moviehub.data.models.Result
-import com.ss.moviehub.repository.details.DetailsRepository.DetailsStatus.CheckResult
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-class DetailsRepository @Inject constructor(
-    private val movieDao: MovieDao
-) {
+interface DetailsRepository {
 
-    fun checkIsOnLibrary(movieId: Int) = flow {
-        movieDao.getAllMovies().collect { movieList ->
-            val isOnLibrary = movieList.find { it.id == movieId }
-            if (isOnLibrary != null) this.emit(CheckResult(isOnLibrary = true))
-            else this.emit(CheckResult(isOnLibrary = false))
-        }
-    }.flowOn(Dispatchers.IO)
+    fun isInLibrary(movieId: Int?): Flow<Boolean>
 
-    suspend fun addMovie(result: Result) = movieDao.addAndUpdateMovie(result)
+    suspend fun addMovieToLibrary(movie: Result?)
 
-    suspend fun removeMovie(result: Result) = movieDao.deleteMovie(result)
-
-    sealed class DetailsStatus {
-        object Idle                                      : DetailsStatus()
-        data class CheckResult(val isOnLibrary: Boolean) : DetailsStatus()
-    }
+    suspend fun removeMovieFromLibrary(movie: Result?)
 }
